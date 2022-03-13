@@ -1,0 +1,162 @@
+@import url(./vendor/fonts/inter.css);
+.body {
+  background-color: #000000;
+  position: relative;
+}
+.page {
+  margin: auto;
+  max-width: 880px;
+}
+.header {
+  border-bottom: 1px solid #545454;
+  padding-top: 45px;
+  margin: 0 auto;
+  max-width: 884px;
+  min-height: 74px;
+}
+.header__logo {
+  margin-bottom: 41px;
+}
+/* CSS FOR PROFILE */
+.profile {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: max-content 1fr;
+  grid-template-areas: "avatar profile add";
+  margin: 0 auto;
+  padding-top: 40px;
+  max-width: 880px;
+  min-height: 120px;
+}
+.profile__info {
+  padding-left: 30px;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: max-content 1fr;
+  grid-template-areas:
+    "title button"
+    "subtitle .";
+  align-items: center;
+  row-gap: 16px;
+  column-gap: 18px;
+  align-self: center;
+}
+.profile__title {
+  margin: 0;
+  max-width: 294px;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 48px;
+  color: #ffffff;
+  font-family: "inter", "Arial", "sans-serif";
+  font-style: normal;
+  grid-area: title;
+}
+.profile__paragraph {
+  margin: 0;
+  align-self: flex-start;
+  max-width: 336px;
+  font-family: "inter", "Arial", "sans-serif";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #ffffff;
+  grid-area: subtitle;
+}
+.profile__edit-button {
+  outline: none;
+  border: none;
+  background-color: black;
+  background-image: url(./Images/Profile__button_edit.svg);
+  width: 24px;
+  height: 24px;
+  grid-area: button;
+  transition: opacity 100ms ease-in-out;
+}
+.profile__edit-button:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+.profile__add-button {
+  outline: none;
+  border: none;
+  background-color: black;
+  background-image: url(./Images/Profile__button_add.svg);
+  width: 150px;
+  height: 50px;
+  align-self: center;
+  transition: opacity 100ms ease-in-out;
+}
+.profile__add-button:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+/* CSS FOR ELEMENTS */
+.elements {
+  padding-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  row-gap: 20px;
+  column-gap: 17px;
+}
+.element {
+  max-width: 282px;
+  min-height: 361px;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+.element__item {
+  max-width: 246px;
+  /* display: flex;
+    justify-content: space-between; */
+  display: grid;
+  grid-template-columns: 219px 22px;
+  margin-left: 21px;
+  margin-right: 15px;
+}
+.element_title {
+  font-family: "inter", "Arial", "sans-serif";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000000;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.element__button {
+  margin-right: 5px;
+  outline: none;
+  border: none;
+  width: 22px;
+  height: 19px;
+  align-self: center;
+  background-color: #ffffff;
+  background-image: url(./Images/element__logo.svg);
+  transition: opacity 100ms ease-in-out;
+}
+.element__button:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+.element__button:active {
+  opacity: 1;
+  cursor: pointer;
+  background-image: url(./Images/element__logo_dark.svg);
+}
+/* CSS FOR FOOTER */
+.footer{
+  padding-top: 66px;
+}
+.footer__author {
+  font-family: "inter", "Arial", "sans-serif";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  color: #545454;
+}
+/* css for form */
