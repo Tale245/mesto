@@ -75,7 +75,7 @@
   transition: opacity 100ms ease-in-out;
 }
 .profile__edit-button:hover {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: pointer;
 }
 .profile__add-button {
@@ -89,7 +89,7 @@
   transition: opacity 100ms ease-in-out;
 }
 .profile__add-button:hover {
-  opacity: 0.7;
+  opacity: 0.6;
   cursor: pointer;
 }
 /* CSS FOR ELEMENTS */
@@ -160,3 +160,113 @@
   color: #545454;
 }
 /* css for form */
+.popup{
+  font-family: "inter", "Arial", "sans-serif";
+  position: fixed;
+  z-index: 100;
+  background: rgba(0, 0, 0, .6);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.popup__container{
+  margin: 0 auto;
+  position: relative;
+  width: 430px;
+  min-height: 330px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.15);
+}
+.popup__content{
+  display: flex;
+  flex-direction: column;
+}
+.popup__title{
+  font-family: "inter", "Arial", "sans-serif";
+  font-style: normal;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: #000000;
+  margin-left: 36px;
+  margin-bottom: 54px;
+}
+.popup__field{
+  font-family: "inter", "Arial", "sans-serif";
+  border: none;
+  border-bottom: 1px solid #000000;
+  outline: none;
+  max-width: 358px;
+  margin-left: 36px;
+  margin-bottom: 30px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #000000;
+}
+.popup__field:last-of-type{
+  margin-bottom: 0;
+}
+.popup__submit-button{
+  width: 358px;
+  height: 50px;
+  background-color: #000000;
+  margin-left: 36px;
+  margin-top: 48px;
+  outline: none;
+  border: none;
+  border-radius: 2px;
+  transition: opacity 100ms ease-in-out;
+}
+.popup__submit-button:hover{
+  opacity: 0.8;
+  cursor: pointer;
+}
+.popup__text-button{
+  font-family: "inter", "Arial", "sans-serif";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  color: #FFFFFF;
+}
+.popup__close-button{
+  position: absolute;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 32px;
+  height: 32px;
+  right: -36px;
+  top: -56px;
+  transition: opacity 100ms ease-in-out;
+}
+.popup__close-button::before{
+  position: absolute;
+  content: '';
+  height: 32px;
+  border: 2px solid #ffffff;
+  transform: rotate(45deg);
+}
+.popup__close-button::after{
+  transform: rotate(-45deg);
+  position: absolute;
+  content: '';
+  height: 32px;
+  border: 2px solid #ffffff;
+}
+.popup__close-button:hover{
+  opacity: 0.6;
+}
+.popup_opened{
+  display: flex;
+}
