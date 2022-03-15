@@ -1,0 +1,12 @@
+.profile__paragraph {
+    margin: 0;
+    align-self: flex-start;
+    max-width: 336px;
+    font-family: "inter", "Arial", "sans-serif";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #ffffff;
+    grid-area: subtitle;
+  }

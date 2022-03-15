@@ -1,0 +1,13 @@
+.profile__info {
+    padding-left: 30px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: max-content 1fr;
+    grid-template-areas:
+      "title button"
+      "subtitle .";
+    align-items: center;
+    row-gap: 16px;
+    column-gap: 18px;
+    align-self: center;
+  }
