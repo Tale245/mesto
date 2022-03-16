@@ -1,3 +1,11 @@
 .footer{
-    padding-top: 66px;
+    padding-top: 46px;
+    padding-bottom: 60px;
+    align-self: flex-start;
+  }
+  @media screen and (max-width: 320px){
+    .footer{
+      padding-top: 48px;
+      padding-bottom: 36px;
+    }
   }

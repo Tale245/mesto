@@ -1,16 +1,14 @@
-.footer__author {
+.popup__text-button{
     font-family: "inter", "Arial", "sans-serif";
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
     line-height: 22px;
-    color: #545454;
-    max-width: 318px;
+    text-align: center;
+    color: #FFFFFF;
   }
   @media screen and (max-width:320px){
-    .footer__author{
-      max-width: 282px;
-      margin: auto;
+    .popup__text-button{
       font-size: 14px;
       line-height: 17px;
     }

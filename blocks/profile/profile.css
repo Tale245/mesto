@@ -1,10 +1,13 @@
-.profile {
-    display: grid;
-    grid-template-columns: max-content 1fr;
-    grid-template-rows: max-content 1fr;
-    grid-template-areas: "avatar profile add";
-    margin: 0 auto;
-    padding-top: 40px;
-    max-width: 880px;
-    min-height: 120px;
+.profile{
+  margin: 0;
+  max-width: 880px;
+  min-height: 120px;
+  padding-top: 40px;
+  display: flex;
+  align-items: center;
+}
+@media screen and (max-width: 320px){
+  .profile{
+    flex-direction: column;
   }
+}
