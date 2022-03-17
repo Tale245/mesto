@@ -6,4 +6,4 @@
  1. JavaScript.
  2. Grid.
  3. Flex.
- Ссылка на работу: https://tale245.github.io/mesto/;
+ Ссылка на работу: https://tale245.github.io/mesto/
