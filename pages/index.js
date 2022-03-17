@@ -30,34 +30,3 @@ function formSubmitHandler (evt) {
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 formElement.addEventListener('click', formSubmitHandler);
-
-let cardElement = document.querySelectorAll('.element');
-let buttonLike = document.querySelectorAll('.element__button');
-console.log(cardElement)
-let i = cardElement.length;
-
-function like_1(){
-    buttonLike[0].classList.toggle('element__button_active');
-}
-function like_2(){
-    buttonLike[1].classList.toggle('element__button_active');
-}
-function like_3(){
-    buttonLike[2].classList.toggle('element__button_active');
-}
-function like_4(){
-    buttonLike[3].classList.toggle('element__button_active');
-}
-function like_5(){
-    buttonLike[4].classList.toggle('element__button_active');
-}
-function like_6(){
-    buttonLike[5].classList.toggle('element__button_active');
-}
-buttonLike[0].addEventListener('click', like_1);
-buttonLike[1].addEventListener('click', like_2);
-buttonLike[2].addEventListener('click', like_3);
-buttonLike[3].addEventListener('click', like_4);
-buttonLike[4].addEventListener('click', like_5);
-buttonLike[5].addEventListener('click', like_6);
-
