@@ -11,12 +11,14 @@
     font-size: 14px;
     line-height: 17px;
     color: #000000;
+    padding-bottom: 13px;
   }
   .popup__field:last-of-type{
     margin-bottom: 0;
   }
-  @media screen and (max-width: 320px){
+  @media screen and (max-width: 630px){
     .popup__field{
       max-width: 238px;
+
     }
   }

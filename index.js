@@ -30,3 +30,12 @@ function formSubmitHandler (evt) {
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 formElement.addEventListener('click', formSubmitHandler);
+
+let Elements = document.querySelector('.elements');
+let cardElement = Elements.querySelector('.element');
+let buttonLike = cardElement.querySelector('.element__button');
+
+cardElement.addEventListener('click', function like(){
+    buttonLike.classList.toggle('element__button_active');
+    return cardElement;
+})

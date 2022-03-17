@@ -1,3 +1,4 @@
+@import url(./vendor/normalize.css);
 @import url(./vendor/fonts/inter.css);
 @import url(./blocks/body/body.css);
 @import url(./blocks/page/page.css);
@@ -26,3 +27,6 @@
 @import url(./blocks/popup/__text-button/popup__text-button.css);
 @import url(./blocks/popup/__close-button/popup__close-button.css);
 @import url(./blocks/popup/_opened/popup_opened.css);
+.element__button_active{
+    background-image: url(./Images/element__logo_dark.svg);
+  }

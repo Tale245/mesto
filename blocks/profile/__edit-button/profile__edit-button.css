@@ -16,7 +16,12 @@
   cursor: pointer;
   opacity: 0.6;
 }
-@media screen and (max-width: 320px){
+@media screen and (max-width: 990px){
+  .profile__edit-button{
+    margin-bottom: 9px;
+  }
+}
+@media screen and (max-width: 630px){
   .profile__edit-button{
     margin-bottom: 6px;
     background-size: 7.5px;

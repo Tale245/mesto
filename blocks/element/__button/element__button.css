@@ -13,8 +13,3 @@
     opacity: 0.7;
     cursor: pointer;
   }
-  .element__button:active {
-    opacity: 1;
-    cursor: pointer;
-    background-image: url(../../../Images/element__logo_dark.svg);
-  }
