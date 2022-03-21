@@ -1,12 +1,12 @@
 .profile__image {
-    background-image: url("../../../Images/profile__avatar.svg");
-    width: 120px;
-    height: 120px;
-    grid-column: 1;
-    grid-row: 1;
+  width: 120px;
+  height: 120px;
+  grid-column: 1;
+  grid-row: 1;
 }
-@media screen and (max-width:990px){
-    .profile__image {
-        margin:0 auto;
-    }
+
+@media screen and (max-width: 990px) {
+  .profile__image {
+    margin: 0 auto;
+  }
 }
