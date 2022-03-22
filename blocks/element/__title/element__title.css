@@ -1,6 +1,5 @@
 .element__title {
   margin: 0;
-  padding-top: 21px;
   font-family: "inter", "Arial", "sans-serif";
   font-style: normal;
   font-weight: 900;
@@ -10,4 +9,5 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  
 }

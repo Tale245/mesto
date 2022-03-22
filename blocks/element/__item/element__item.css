@@ -1,9 +1,9 @@
 .element__item {
   max-width: 246px;
-  /* display: flex;
-      justify-content: space-between; */
   display: grid;
   grid-template-columns: 219px 22px;
+  padding-top: 21px;
+  padding-bottom: 1px;
   padding-left: 21px;
   padding-right: 15px;
 }
