@@ -1,7 +1,7 @@
 // Открытие popup редактирования информации
 const editButton = document.querySelector('.profile__edit-button');
 const closeButton = document.querySelector('.popup__close-button');
-const popupEditInfo = document.querySelector('.popup__edit-info');
+const popupEditInfo = document.querySelector('.popup_edit-info');
 
 function openPopupEdit(){
     popupEditInfo.classList.add('popup_opened');
@@ -35,7 +35,7 @@ formElement.addEventListener('click', formSubmitHandler);
 // Открытие popup добавления карточки
 const addButton = document.querySelector('.profile__add-button');
 const closeButtonAdd = document.querySelector('.popup__close-button_add');
-const popupAddItem = document.querySelector('.popup__add-item');
+const popupAddItem = document.querySelector('.popup_add-item');
 
 function openPopupAdd(){
     popupAddItem.classList.add('popup_opened');
@@ -86,7 +86,7 @@ let imageTitle = popupAddItem.querySelector('.popup__field_title-image');
 const elements = document.querySelector('.elements');
 const imagePopup = document.querySelector('.popup__image');
 const elementImg = document.querySelector('.element__img');
-const popupImg = document.querySelector('.popup__image-scale');
+const popupImg = document.querySelector('.popup_image-scale');
 const popupParagraph = document.querySelector('.popup__paragraph');
 const popupCloseImage = document.querySelector('.popup__close-button-image');
 
