@@ -1,13 +1,13 @@
 // Открытие popup редактирования информации
 const editButton = document.querySelector('.profile__edit-button');
-const closeButton = document.querySelector('.popup__close-button');
+const profileCloseBtn = document.querySelector('.popup__close-button');
 const popupEditInfo = document.querySelector('.popup_edit-info');
 const popupFormd = document.querySelector('.popup__form_add-image');
 const formElement = popupEditInfo.querySelector('.popup__form_info_edit');
 const nameInput = document.querySelector('.popup__field_name');
 const jobInput = document.querySelector('.popup__field_job');
 const addButton = document.querySelector('.profile__add-button');
-const closeButtonAdd = document.querySelector('.popup__close-button_add');
+const insertCloseBtn = document.querySelector('.popup__close-button_add');
 const popupAddItem = document.querySelector('.popup_add-item');
 const addItemForm = popupAddItem.querySelector('.popup__form');
 const imageField = popupAddItem.querySelector('.popup__field_image');
@@ -27,22 +27,27 @@ function closePopup(popup){
   popup.classList.remove('popup_opened')
 }
 
+// Открытие попапов
 editButton.addEventListener('click', function(){
   openPopup(popupEditInfo)
-});
-closeButton.addEventListener('click', function(){
-  closePopup(popupEditInfo)
 });
 addButton.addEventListener('click', function(){
   openPopup(popupAddItem)
 });
-closeButtonAdd.addEventListener('click', function(){
+// Закрытие попапов
+profileCloseBtn.addEventListener('click', function(){
+  closePopup(popupEditInfo)
+});
+insertCloseBtn.addEventListener('click', function(){
   closePopup(popupAddItem)
 });
+popupCloseImage.addEventListener('click', function (){
+  closePopup(popupImg)
+})
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
-function formSubmitHandler (evt) {
+function handleProfileFormSubmit(evt) {
     evt.preventDefault();
     title.textContent = nameInput.value;
     subtitle.textContent = jobInput.value;
@@ -50,11 +55,7 @@ function formSubmitHandler (evt) {
 }
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', formSubmitHandler);
-
-
-
-
+formElement.addEventListener('submit', handleProfileFormSubmit);
 
 // 6 карточек
 
@@ -88,22 +89,22 @@ const initialCards = [
 // создание карточки
 
 
-function createItem(inputTitle, inputField){
+function createCard(inputTitle, inputField){
 
     const cardTemplate = document.querySelector('#template').content;
-    const cardItem = cardTemplate.querySelector('.element').cloneNode(true);
-    const elementImage = cardItem.querySelector('.element__img')
+    const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
+    const elementImage = cardElement.querySelector('.element__img');
    
-    cardItem.querySelector('.element__title').textContent = inputTitle;
+    cardElement.querySelector('.element__title').textContent = inputTitle;
     elementImage.src = inputField;
     elementImage.alt = inputTitle;
 
   // Удаление карточки  
-    cardItem.querySelector('.element__trash-button').addEventListener('click', function(){
-        cardItem.remove();
+  cardElement.querySelector('.element__trash-button').addEventListener('click', function(){
+    cardElement.remove();
     })
     // Лайк карточки 
-    cardItem.querySelector('.element__button').addEventListener('click', function(event){
+    cardElement.querySelector('.element__button').addEventListener('click', function(event){
         event.target.classList.toggle('element__button_active');
     })
     // Открытие попапа с изображением
@@ -113,23 +114,21 @@ function createItem(inputTitle, inputField){
       imagePopup.alt = inputTitle;
       popupParagraph.textContent = inputTitle; 
     })
-  // Закрытие попапа с изображением
-    popupCloseImage.addEventListener('click', function (){
-      closePopup(popupImg)
-    })
 
-    elements.prepend(cardItem);
+    return cardElement
 }
-
+function createItem(inputTitle, inputField){
+  const cardItem = createCard(inputTitle, inputField)
+  elements.prepend(cardItem);
+}
 
 function addItem(event){
     event.preventDefault();
-    let inputField = imageField.value;
-    let inputTitle = imageTitle.value;
+    const inputField = imageField.value;
+    const inputTitle = imageTitle.value;
     createItem(inputTitle, inputField);
     closePopup(popupAddItem)
-    imageField.value = '';
-    imageTitle.value = '';
+    addItemForm.reset()
 }
 
 // функция перебора массива
