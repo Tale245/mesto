@@ -3,7 +3,7 @@ const editButton = document.querySelector('.profile__edit-button');
 const profileCloseBtn = document.querySelector('.popup__close-button');
 const popupEditInfo = document.querySelector('.popup_edit-info');
 const popupFormd = document.querySelector('.popup__form_add-image');
-const formElement = popupEditInfo.querySelector('.popup__form_info_edit');
+const profileForm = popupEditInfo.querySelector('.popup__form_info_edit');
 const nameInput = document.querySelector('.popup__field_name');
 const jobInput = document.querySelector('.popup__field_job');
 const addButton = document.querySelector('.profile__add-button');
@@ -55,7 +55,7 @@ function handleProfileFormSubmit(evt) {
 }
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
-formElement.addEventListener('submit', handleProfileFormSubmit);
+profileForm.addEventListener('submit', handleProfileFormSubmit);
 
 // 6 карточек
 
