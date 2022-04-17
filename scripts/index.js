@@ -19,20 +19,44 @@ const popupParagraph = document.querySelector('.popup__paragraph');
 const popupCloseImage = document.querySelector('.popup__close-button-image');
 const title = document.querySelector('.profile__title');
 const subtitle = document.querySelector('.profile__paragraph');
-
-function openPopup(popup){
+const submitButtonAdd = document.querySelector('.popup__submit-button_add');
+const submitButtonEdit = document.querySelector('.popup__submit-button_edit');
+const ESC_KEY = "Escape";
+const overlayAdd = document.querySelector('.popup__overlay-add');
+const overlayEdit = document.querySelector('.popup__overlay-edit');
+const overlayImg = document.querySelector('.popup__overlay-img');
+function openPopupImg(popup){
   popup.classList.add('popup_opened')
+  document.addEventListener('keyup', onDocumentKeyUp);
+}
+function openPopup(popup, button){
+  popup.classList.add('popup_opened')
+  document.addEventListener('keyup', onDocumentKeyUp);
+  button.disabled = true;
+  button.classList.add('button__disabled')
+  
 }
 function closePopup(popup){
-  popup.classList.remove('popup_opened')
+  popup.classList.remove('popup_opened');
+  document.removeEventListener('keyup', onDocumentKeyUp)
+}
+
+
+function onDocumentKeyUp(event){
+  console.log(event.key)
+  if(event.key === ESC_KEY || event.which == 1){
+    closePopup(popupEditInfo);
+    closePopup(popupAddItem);
+    closePopup(popupImg);
+  }
 }
 
 // Открытие попапов
 editButton.addEventListener('click', function(){
-  openPopup(popupEditInfo)
+  openPopup(popupEditInfo, submitButtonEdit)
 });
 addButton.addEventListener('click', function(){
-  openPopup(popupAddItem)
+  openPopup(popupAddItem, submitButtonAdd)
 });
 // Закрытие попапов
 profileCloseBtn.addEventListener('click', function(){
@@ -43,7 +67,17 @@ insertCloseBtn.addEventListener('click', function(){
 });
 popupCloseImage.addEventListener('click', function (){
   closePopup(popupImg)
-})
+});
+overlayAdd.addEventListener('click', function (){
+  closePopup(popupAddItem)
+});
+overlayEdit.addEventListener('click', function (){
+  closePopup(popupEditInfo)
+});
+overlayImg.addEventListener('click', function (){
+  closePopup(popupImg)
+});
+
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -109,7 +143,7 @@ function createCard(inputTitle, inputField){
     })
     // Открытие попапа с изображением
     elementImage.addEventListener('click', function (){
-      openPopup(popupImg)
+      openPopupImg(popupImg)
       imagePopup.src = inputField;
       imagePopup.alt = inputTitle;
       popupParagraph.textContent = inputTitle; 

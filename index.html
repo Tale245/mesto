@@ -33,14 +33,17 @@
     </footer>
   </div>
   <div class="popup popup_edit-info">
+    <div class="popup__overlay popup__overlay-edit"></div>
     <div class="popup__container">
       <button class="popup__close-button"></button>
       <section class="popup__content">
         <h3 class="popup__title">Редактировать профиль</h3>
-    <form class="popup__form popup__form_info_edit">
-          <input type="text" class="popup__field popup__field_name" value="Жак-Ив Кусто" />
-          <input type="text" class="popup__field popup__field_job" value="Исследователь океана" />
-      <button class="popup__submit-button">
+    <form class="popup__form popup__form_info_edit" id="editForm" novalidate>
+          <input type="text" class="popup__field popup__field_name" id="name" value="Жак-Ив Кусто" minlength="2" maxlength="40" required/>
+          <span class="popup__span-fieldName popup__span-error" id="name-error"></span>
+          <input type="text" class="popup__field popup__field_job" id="job" value="Исследователь океана" minlength="2" maxlength="200" required/>
+          <span class="popup__span-fieldJob popup__span-error" id="job-error"></span>
+      <button class="popup__submit-button popup__submit-button_edit" >
         <span class="popup__text-button">Сохранить</span>
       </button>
     </form>
@@ -48,16 +51,19 @@
     </div>
   </div>
   <div class="popup popup_add-item">
+    <div class="popup__overlay popup__overlay-add"></div>
     <div class="popup__container">
       <button class="popup__close-button popup__close-button_add"></button>
       <section class="popup__content">
         <h3 class="popup__title">Новое место</h3>
-        <form class="popup__form popup__form_add-image">
-          <input type="text" name="imageTitle" class="popup__field popup__field_title-image" placeholder="Название"
-            value="" />
-          <input type="text" name="imageLink" class="popup__field popup__field_image" placeholder="Ссылка на картинку"
-            value="" />
-      <button class="popup__submit-button popup__submit-button_add">
+        <form class="popup__form popup__form_add-image" id="addForm" novalidate>
+          <input type="text" name="imageTitle" class="popup__field popup__field_title-image" id="title" placeholder="Название"
+            value="" minlength="2" maxlength="30" required/>
+            <span class="popup__span-imageTitle popup__span-error" id="title-error"></span>
+          <input type="url" name="imageLink" class="popup__field popup__field_image" id="url" placeholder="Ссылка на картинку"
+            value="" required/>
+            <span class="popup__span-imageLink popup__span-error" id="url-error"></span>
+      <button class="popup__submit-button popup__submit-button_add" >
         <span class="popup__text-button">Создать</span>
       </button>
       </form>
@@ -65,6 +71,7 @@
     </div>
   </div>
   <div class="popup popup_image-scale">
+    <div class="popup__overlay popup__overlay-img"></div>
     <div class="popup__container popup__container_image">
       <button class="popup__close-button popup__close-button-image"></button>
       <section class="popup__content">
@@ -84,6 +91,7 @@
     </div>
   </template>
   <script src="./scripts/index.js"></script>
+  <script src="./scripts/validate.js"></script>
 </body>
 
 </html>

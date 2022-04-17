@@ -34,3 +34,33 @@
 @import url(../blocks/popup/__image/popup__image.css);
 @import url(../blocks/popup/__paragraph/popup__paragraph.css);
 @import url(../blocks/popup/__form/popup__form.css);
+
+.popup__overlay{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+}
+.popup__span-error{
+  z-index: 10;
+  position: absolute;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FF0000;
+  padding-top: 5px;
+}
+.popup__field:invalid{
+  border-bottom: 1px solid red;
+}
+
+.button__disabled{
+  opacity: 0.2;
+}
+.button__disabled:hover{
+  opacity: 0.2;
+}
