@@ -41,9 +41,11 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.6);
 }
-.popup__span-error{
+.popup_image-scale{
+  background: rgba(0, 0, 0, 0.9);
+}
+.popup__field-error{
   z-index: 10;
   position: absolute;
   font-family: 'Inter';
@@ -54,13 +56,22 @@
   color: #FF0000;
   padding-top: 5px;
 }
-.popup__field:invalid{
-  border-bottom: 1px solid red;
-}
-
 .button__disabled{
+  background:none;
+  border: 1px solid #000000;
   opacity: 0.2;
+  color: #000; 
 }
 .button__disabled:hover{
   opacity: 0.2;
+}
+.form__input_type_error {
+  border-bottom-color: red;
+}
+.popup__field-error{
+ display: none;
+ color: red;
+}
+.form__input-error_active{
+  display: block;
 }

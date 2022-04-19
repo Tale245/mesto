@@ -2,7 +2,7 @@
   font-family: "inter", "Arial", "sans-serif";
   position: fixed;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   top: 0;
   left: 0;
   right: 0;
@@ -10,7 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
+  opacity: 0.5;
   visibility: hidden;
   transition: visibility .3s, opacity .3s linear;
 }
