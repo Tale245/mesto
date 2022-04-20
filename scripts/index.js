@@ -2,7 +2,7 @@
 const editButton = document.querySelector('.profile__edit-button');
 const profileCloseBtn = document.querySelector('.popup__close-button');
 const popupEditInfo = document.querySelector('.popup_edit-info');
-const popupFormd = document.querySelector('.popup__form_add-image');
+const popupForm = document.querySelector('.popup__form_add-image');
 const profileForm = popupEditInfo.querySelector('.popup__form_info_edit');
 const nameInput = document.querySelector('.popup__field_name');
 const jobInput = document.querySelector('.popup__field_job');
@@ -28,7 +28,7 @@ const overlayImg = document.querySelector('.popup__overlay-img');
 
 // функция открытие попапа
 function openPopup(popup){
-  popup.classList.add('popup_opened')
+  popup.classList.add('popup_opened');
   document.addEventListener('keyup', onDocumentKeyUp);
 }
 
@@ -56,6 +56,10 @@ function onDocumentKeyUp(event) {
 // Открытие попапов
 editButton.addEventListener('click', function(){
   checkProfile()
+  submitButtonEdit.disabled = false;
+  submitButtonEdit.classList.remove('button__disabled')
+  isValid(profileForm, nameInput, 'form__input-error_active', 'form__input_type_error')
+  isValid(profileForm, jobInput, 'form__input-error_active', 'form__input_type_error')
 });
 addButton.addEventListener('click', function(){
   openPopup(popupAddItem)
