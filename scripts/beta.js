@@ -17,6 +17,22 @@ function hideInputError(formElement, inputElement){
   errorElement.classList.remove('form__input-error_active');
   errorElement.textContent = '';
 }
+
+const hasInvalidInput = (inputList) =>{
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid
+  })
+};
+
+const toggleButtonState = (inputList, buttonElement) =>{
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add('button__disabled')
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove('button__disabled')
+    buttonElement.disabled = false;
+  }
+}
 const isValid = (formElement, inputElement) => {
   if(!inputElement.validity.valid){
     showInputError(formElement, inputElement, inputElement.validationMessage);
@@ -25,15 +41,17 @@ const isValid = (formElement, inputElement) => {
   }
 };
 
-// formElement.addEventListener('submit', function(evt){
-//   evt.preventDefault();
-// })
-
 const setEventListeners = (formElement) => {
   const inputList = Array.from(formElement.querySelectorAll('.popup__field'));
+  
+  const buttonElement = formElement.querySelector('.popup__submit-button');
+
+  toggleButtonState(inputList, buttonElement);
+
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
       isValid(formElement, inputElement)
+      toggleButtonState(inputList, buttonElement);
     });
   });
 };

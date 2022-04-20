@@ -25,38 +25,40 @@ const ESC_KEY = "Escape";
 const overlayAdd = document.querySelector('.popup__overlay-add');
 const overlayEdit = document.querySelector('.popup__overlay-edit');
 const overlayImg = document.querySelector('.popup__overlay-img');
-function openPopupImg(popup){
+
+// функция открытие попапа
+function openPopup(popup){
   popup.classList.add('popup_opened')
   document.addEventListener('keyup', onDocumentKeyUp);
 }
-function openPopup(popup, button){
-  popup.classList.add('popup_opened')
-  document.addEventListener('keyup', onDocumentKeyUp);
-  button.disabled = true;
-  button.classList.add('button__disabled')
-  
+
+// функция проверки данных профиля
+function checkProfile(){
+  nameInput.value = title.textContent;
+  jobInput.value = subtitle.textContent;
+  openPopup(popupEditInfo);
 }
+
+// функция закрытие попапа
 function closePopup(popup){
   popup.classList.remove('popup_opened');
-  document.removeEventListener('keyup', onDocumentKeyUp)
+  document.removeEventListener('keyup',onDocumentKeyUp)
 }
 
-
-function onDocumentKeyUp(event){
-  console.log(event.key)
-  if(event.key === ESC_KEY || event.which == 1){
-    closePopup(popupEditInfo);
-    closePopup(popupAddItem);
-    closePopup(popupImg);
+// close popup by escape
+function onDocumentKeyUp(event) {
+  if (event.key === ESC_KEY) {
+    const popupOpened = document.querySelector('.popup_opened');
+    closePopup(popupOpened );
   }
-}
+};
 
 // Открытие попапов
 editButton.addEventListener('click', function(){
-  openPopup(popupEditInfo, submitButtonEdit)
+  checkProfile()
 });
 addButton.addEventListener('click', function(){
-  openPopup(popupAddItem, submitButtonAdd)
+  openPopup(popupAddItem)
 });
 // Закрытие попапов
 profileCloseBtn.addEventListener('click', function(){
@@ -143,12 +145,12 @@ function createCard(inputTitle, inputField){
     })
     // Открытие попапа с изображением
     elementImage.addEventListener('click', function (){
-      openPopupImg(popupImg)
+      openPopup(popupImg)
       imagePopup.src = inputField;
       imagePopup.alt = inputTitle;
       popupParagraph.textContent = inputTitle; 
     })
-
+    
     return cardElement
 }
 function createItem(inputTitle, inputField){
@@ -156,6 +158,12 @@ function createItem(inputTitle, inputField){
   elements.prepend(cardItem);
 }
 
+// функция блокировки кнопки
+
+function disabledSubmit(){
+  submitButtonAdd.classList.add('button__disabled')
+  submitButtonAdd.disabled = true;
+}
 function addItem(event){
     event.preventDefault();
     const inputField = imageField.value;
@@ -163,6 +171,7 @@ function addItem(event){
     createItem(inputTitle, inputField);
     closePopup(popupAddItem)
     addItemForm.reset()
+    disabledSubmit()
 }
 
 // функция перебора массива
