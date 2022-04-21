@@ -1,58 +1,77 @@
-// валидация формы
 
-const addForm = document.forms.addForm;
-const editForm = document.forms.editForm;
+function showInputError(formElement, inputElement, errorMessage,errorClass, inputErrorClass){
 
-const validateInput = (input) => {
-  const errorElement = input.parentNode.querySelector(`#${input.id}-error`)
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
 
-  // validate input
-  errorElement.textContent = input.validationMessage;
+  // показываем сообщение об ошибке
+  inputElement.classList.add(inputErrorClass);
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add(errorClass);
+}
+function hideInputError(formElement, inputElement,errorClass, inputErrorClass){
+  // находим элемент ошибки
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
 
+// скрываем сообщение об ошибке
+  inputElement.classList.remove(inputErrorClass);
+  errorElement.classList.remove(errorClass);
+  errorElement.textContent = '';
 }
 
-const enableButton = (button, inactiveButtonClass) => {
-  button.disabled = false;
-  button.classList.remove(inactiveButtonClass)
-}
-const disableButton = (button, inactiveButtonClass) => {
-  button.disabled = true;
-  button.classList.add(inactiveButtonClass)
-}
+const hasInvalidInput = (inputList) =>{
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid
+  })
+};
 
-const setButtonState = (button, isValid) => {
-  if (isValid){
-    enableButton(button, "button__disabled")
-  }else{
-    disableButton(button, "button__disabled")
+const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) =>{
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add(inactiveButtonClass)
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove(inactiveButtonClass)
+    buttonElement.disabled = false;
   }
 }
-
-
-const handleInput = (event) => {
-  const currentForm = event.currentTarget;
-  const input = event.target;
-  const submitButton = currentForm.querySelector('.popup__submit-button')
-
-
-  validateInput(input)
-
-  setButtonState(submitButton, currentForm.checkValidity())
-}
-
-const handleSubmit = (event) => {
-  event.preventDefault();
-
-  const currentForm = event.target;
-
-  if (event.target.checkValidity()){
-    currentForm.reset();
+const isValid = (formElement, inputElement,errorClass, inputErrorClass) => {
+  if(!inputElement.validity.valid){
+    showInputError(formElement, inputElement, inputElement.validationMessage,errorClass, inputErrorClass);
+  } else {
+    hideInputError(formElement, inputElement, errorClass, inputErrorClass);
   }
-}
+};
 
+const setEventListeners = (formElement, { inputSelector, submitButtonSelector,inactiveButtonClass, errorClass, inputErrorClass }) => {
+  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+  
+  const buttonElement = formElement.querySelector(submitButtonSelector);
 
-addForm.addEventListener('submit', handleSubmit);
-editForm.addEventListener('submit', handleSubmit);
+  toggleButtonState(inputList, buttonElement, inactiveButtonClass);
 
-addForm.addEventListener('input', handleInput);
-editForm.addEventListener('input', handleInput);
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      isValid(formElement, inputElement,errorClass, inputErrorClass)
+      toggleButtonState(inputList, buttonElement, inactiveButtonClass);
+    });
+  });
+};
+
+const enableValidation = ({ formSelector, inputSelector, submitButtonSelector, inactiveButtonClass,  errorClass, inputErrorClass}) => {
+  const formList = Array.from(document.querySelectorAll(formSelector));
+
+  formList.forEach((formElement) => {
+    formElement.addEventListener('submit', (evt) => {
+      evt.preventDefault()
+    });
+    setEventListeners(formElement, { inputSelector, submitButtonSelector, inactiveButtonClass, errorClass, inputErrorClass});
+  });
+};
+
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__field',
+  submitButtonSelector: '.popup__submit-button',
+  inactiveButtonClass: 'button__disabled',
+  inputErrorClass: 'form__input_type_error',
+  errorClass: 'form__input-error_active'
+}); 
