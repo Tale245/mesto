@@ -3,13 +3,14 @@ const buttonEditProfile = document.querySelector(".profile__edit-button");
 const profileCloseBtn = document.querySelector(".popup__close-button");
 const popupAddItem = document.querySelector(".popup_add-item");
 const popupEditInfo = document.querySelector(".popup_edit-info");
-const popupForm = popupAddItem.querySelector(".popup__form_add-image");
+const popupForm = popupAddItem.querySelectorAll(".popup__form");
 const profileForm = popupEditInfo.querySelector(".popup__form_info_edit");
 const nameInput = document.querySelector(".popup__field_name");
 const jobInput = document.querySelector(".popup__field_job");
+const popupField = document.querySelectorAll(".popup__field")
 const buttonAddProfile = document.querySelector(".profile__add-button");
 const btnInsertClose = document.querySelector(".popup__close-button_add");
-const FormAddItem = popupAddItem.querySelector(".popup__form");
+const formAddItem = popupAddItem.querySelector(".popup__form_add-image");
 const imageField = popupAddItem.querySelector(".popup__field_image");
 const imageTitle = popupAddItem.querySelector(".popup__field_title-image");
 const elements = document.querySelector(".elements");
@@ -25,6 +26,7 @@ const ESC_KEY = "Escape";
 const overlayAdd = document.querySelector(".popup__overlay-add");
 const overlayEdit = document.querySelector(".popup__overlay-edit");
 const overlayImg = document.querySelector(".popup__overlay-img");
+const spanError = document.querySelectorAll(".span-error")
 
 const enableValidation = {
   formSelector: ".popup__form",
@@ -40,9 +42,10 @@ import { FormValidator } from './FormValidator.js'
 
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const EditformValidator = new FormValidator(enableValidation, profileForm);
-const AddformValidator = new FormValidator(enableValidation, popupForm);
+const AddformValidator = new FormValidator(enableValidation, formAddItem);
 EditformValidator.enableValidation();
 AddformValidator.enableValidation();
+
 
 // функция открытие попапа
 function openPopup(popup) {
@@ -55,6 +58,14 @@ function openPopup(popup) {
 function checkProfile() {
   nameInput.value = title.textContent;
   jobInput.value = subtitle.textContent;
+  // удаляем сообщение об ошибке при открытии попапа
+  popupField.forEach((item) => {
+    item.classList.remove('form__input_type_error');
+  })
+  spanError.forEach((item) => {
+    item.textContent = "";
+  })
+  // открываем попап
   openPopup(popupEditInfo);
 }
 
@@ -144,11 +155,16 @@ const initialCards = [
 // Импортируем класс Card 
 import { Card } from './Card.js';
 
-// Проходимся по массиву при помощи класса Card
-initialCards.forEach((item) => {
-  const card = new Card (item.name, item.link, '#template')
+// создаем cardElement чтобы код не повторялся
+const cardElement = (name, link, templateSelector) => {
+   const card = new Card (name, link, templateSelector)
   const cardElement = card.generateCard();
   elements.prepend(cardElement)
+}
+
+// Проходимся по массиву при помощи класса Card в функции cardElement
+initialCards.forEach((item) => {
+  cardElement(item.name, item.link, '#template')
 })
 
 // Экспортируем функцию открытия изображения в Card.js
@@ -161,9 +177,7 @@ export function openImage (name, link){
 
 // Функция создание карточки
 const createCard = (inputField, inputTitle, templateSelector) => {
-  const card = new Card(inputTitle, inputField, templateSelector);
-  const cardElement = card.generateCard()
-  elements.prepend(cardElement);
+  cardElement(inputTitle, inputField, templateSelector);
 }
 // функция блокировки кнопки
 function disabledSubmit() {
@@ -177,9 +191,9 @@ function addItem(event) {
   const inputTitle = imageTitle.value;
   createCard(inputField, inputTitle, '#template')
   closePopup(popupAddItem);
-  FormAddItem.reset();
+  formAddItem.reset();
   disabledSubmit();
 }
 
 // Добавляем карточку
-FormAddItem.addEventListener("submit", addItem);
+formAddItem.addEventListener("submit", addItem);

@@ -45,7 +45,7 @@ export class FormValidator{
     }
 
     _setEventListeners(){
-        const inputList = Array.from(document.querySelectorAll(this._object.inputSelector));
+        const inputList = Array.from(this._formElement.querySelectorAll(this._object.inputSelector));
 
         const buttonElement = this._formElement.querySelector(this._object.submitButtonSelector);
 
