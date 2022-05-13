@@ -1,10 +1,10 @@
-import { openImage } from './index.js';
-
 export class Card {
-    constructor(cardName, cardLink, templateSelector){
+    constructor(cardName, cardLink, templateSelector, openImage){
         this._cardName = cardName;
         this._cardLink = cardLink;
         this._templateSelector = templateSelector;
+        this._openImage = openImage;
+        
     }
     _getTemplate(){
         const cardElement = document
@@ -17,7 +17,8 @@ export class Card {
     }
     _setEventListeners(){
         //Обработчик события лайка
-        this._element.querySelector('.element__button').addEventListener('click', () => {
+        this.elementButton = this._element.querySelector('.element__button');
+        this.elementButton.addEventListener('click', () => {
             this._handleLikeClick()
         })
         //Обработчик события удаления карточки
@@ -31,7 +32,7 @@ export class Card {
     }
        // Поиск кнопки лайка и добавление ей класса Active
     _handleLikeClick(){
-        this._element.querySelector('.element__button').classList.toggle('element__button_active');
+        this.elementButton.classList.toggle('element__button_active');
     }
     // Удаление карточки
     _handleTrashClick(){
@@ -39,7 +40,7 @@ export class Card {
     }
     //открытие попапа карточки
     _handleOpenImagePopupClick(){
-        openImage(this._cardName, this._cardLink);
+        this._openImage(this._cardName, this._cardLink);
     }
 
     generateCard(){
@@ -47,11 +48,12 @@ export class Card {
     // Чтобы у других элементов появился доступ к ней
     this._element = this._getTemplate();
     // Добавим слушатели
+    this.cardImage = this._element.querySelector('.element__img')
     this._setEventListeners()
 
     // Добавим данные в карточку
-    this._element.querySelector('.element__img').src = this._cardLink;
-    this._element.querySelector('.element__img').alt = this._cardName;
+    this.cardImage.src = this._cardLink;
+    this.cardImage.alt = this._cardName;
     this._element.querySelector('.element__title').textContent = this._cardName;
     return this._element;
     }

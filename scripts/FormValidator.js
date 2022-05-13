@@ -26,7 +26,7 @@ export class FormValidator{
         });
       };
 
-    _toggleButtonState(inputList, buttonElement){
+    toggleButtonState(inputList, buttonElement){
     if(this._hasInvalidInput(inputList)){
         buttonElement.classList.add(this._object.inactiveButtonClass);
         buttonElement.disabled = true;
@@ -34,6 +34,14 @@ export class FormValidator{
         buttonElement.classList.remove(this._object.inactiveButtonClass);
         buttonElement.disabled = false; 
     }
+    }
+
+    resetValidator(){
+        this.toggleButtonState(this._inputList, this._buttonElement)
+
+        this._inputList.forEach((inputElement) => {
+            this._hideInputError(inputElement)
+        })
     }
 
     _isValid(inputElement){
@@ -45,28 +53,24 @@ export class FormValidator{
     }
 
     _setEventListeners(){
-        const inputList = Array.from(this._formElement.querySelectorAll(this._object.inputSelector));
+        this._inputList = Array.from(this._formElement.querySelectorAll(this._object.inputSelector));
 
-        const buttonElement = this._formElement.querySelector(this._object.submitButtonSelector);
+        this._buttonElement = this._formElement.querySelector(this._object.submitButtonSelector);
 
-        this._toggleButtonState(inputList, buttonElement);
+        this.toggleButtonState(this._inputList, this._buttonElement);
 
-        inputList.forEach((inputElement) => {
+        this._inputList.forEach((inputElement) => {
             inputElement.addEventListener('input', () => {
                 this._isValid(inputElement);
-                this._toggleButtonState(inputList, buttonElement)
+                this.toggleButtonState(this._inputList, this._buttonElement)
             })
         })
     }
 
     enableValidation(){
-        const formList = Array.from(document.querySelectorAll(this._object.formSelector));
-
-        formList.forEach((_formElement) => {
-            this._formElement.addEventListener("submit", (evt) => {
-                evt.preventDefault();
-              });
-              this._setEventListeners()
+        this._formElement.addEventListener("sumbit", (evt) => {
+            evt.preventDefault();
         })
+        this._setEventListeners()
     }
 }

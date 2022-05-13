@@ -22,14 +22,12 @@ const title = document.querySelector(".profile__title");
 const subtitle = document.querySelector(".profile__paragraph");
 const buttonSubmitAdd = document.querySelector(".popup__submit-button_add");
 const buttonSubmitEdit = document.querySelector(".popup__submit-button_edit");
-const ESC_KEY = "Escape";
 const overlayAdd = document.querySelector(".popup__overlay-add");
 const overlayEdit = document.querySelector(".popup__overlay-edit");
 const overlayImg = document.querySelector(".popup__overlay-img");
 const spanError = document.querySelectorAll(".span-error")
 
 const enableValidation = {
-  formSelector: ".popup__form",
   inputSelector: ".popup__field",
   submitButtonSelector: ".popup__submit-button",
   inactiveButtonClass: "button__disabled",
@@ -41,10 +39,10 @@ const enableValidation = {
 import { FormValidator } from './FormValidator.js'
 
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
-const EditformValidator = new FormValidator(enableValidation, profileForm);
-const AddformValidator = new FormValidator(enableValidation, formAddItem);
-EditformValidator.enableValidation();
-AddformValidator.enableValidation();
+const editformValidator = new FormValidator(enableValidation, profileForm);
+const addformValidator = new FormValidator(enableValidation, formAddItem);
+editformValidator.enableValidation();
+addformValidator.enableValidation();
 
 
 // функция открытие попапа
@@ -58,13 +56,6 @@ function openPopup(popup) {
 function checkProfile() {
   nameInput.value = title.textContent;
   jobInput.value = subtitle.textContent;
-  // удаляем сообщение об ошибке при открытии попапа
-  popupField.forEach((item) => {
-    item.classList.remove('form__input_type_error');
-  })
-  spanError.forEach((item) => {
-    item.textContent = "";
-  })
   // открываем попап
   openPopup(popupEditInfo);
 }
@@ -77,7 +68,7 @@ function closePopup(popup) {
 
 // закрытие попапа на ESC
 function onDocumentKeyUp(event) {
-  if (event.key === ESC_KEY) {
+  if (event.key === "Escape") {
     const popupOpened = document.querySelector(".popup_opened");
     closePopup(popupOpened);
   }
@@ -86,10 +77,11 @@ function onDocumentKeyUp(event) {
 // Открытие попапов
 buttonEditProfile.addEventListener("click", function () {
   checkProfile();
-  buttonSubmitEdit.disabled = false;
-  buttonSubmitEdit.classList.remove("button__disabled");
+  editformValidator.resetValidator();
+
 });
 buttonAddProfile.addEventListener("click", function () {
+  addformValidator.resetValidator();
   openPopup(popupAddItem);
 });
 // Закрытие попапов
@@ -155,41 +147,37 @@ const initialCards = [
 // Импортируем класс Card 
 import { Card } from './Card.js';
 
-// создаем cardElement чтобы код не повторялся
-const cardElement = (name, link, templateSelector) => {
-   const card = new Card (name, link, templateSelector)
-  const cardElement = card.generateCard();
-  elements.prepend(cardElement)
+// создаем карточку
+const createCard = (name, link) => {
+  const card = new Card (name, link, '#template', openImage)
+  const cardElement = card.generateCard()
+  return cardElement
+}
+// проходимся по массиву и добавляем карточки из массива на страницу
+initialCards.forEach((item) => {
+  createCard(item);
+  elements.prepend(createCard(item.name, item.link));
+})
+//добавляем карточку на страницу
+const addCard = (link, name) => {
+  createCard(name, link)
+  elements.prepend(createCard(name, link))
 }
 
-// Проходимся по массиву при помощи класса Card в функции cardElement
-initialCards.forEach((item) => {
-  cardElement(item.name, item.link, '#template')
-})
 
 // Экспортируем функцию открытия изображения в Card.js
 export function openImage (name, link){
-  openPopup(popupImg);
   imagePopup.src = link;
   imagePopup.alt = name;
   popupParagraph.textContent = name;
-}
-
-// Функция создание карточки
-const createCard = (inputField, inputTitle, templateSelector) => {
-  cardElement(inputTitle, inputField, templateSelector);
-}
-// функция блокировки кнопки
-function disabledSubmit() {
-  buttonSubmitAdd.classList.add("button__disabled");
-  buttonSubmitAdd.disabled = true;
+  openPopup(popupImg);
 }
 // Функция добавление карточки на страницу
 function addItem(event) {
   event.preventDefault();
   const inputField = imageField.value;
   const inputTitle = imageTitle.value;
-  createCard(inputField, inputTitle, '#template')
+  addCard(inputField, inputTitle)
   closePopup(popupAddItem);
   formAddItem.reset();
   disabledSubmit();
