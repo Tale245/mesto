@@ -1,4 +1,4 @@
-class Card {
+export class Card {
     constructor(cardName, cardLink, templateSelector, openImage){
         this._cardName = cardName;
         this._cardLink = cardLink;
