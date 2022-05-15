@@ -3,11 +3,9 @@ const buttonEditProfile = document.querySelector(".profile__edit-button");
 const profileCloseBtn = document.querySelector(".popup__close-button");
 const popupAddItem = document.querySelector(".popup_add-item");
 const popupEditInfo = document.querySelector(".popup_edit-info");
-const popupForm = popupAddItem.querySelectorAll(".popup__form");
 const profileForm = popupEditInfo.querySelector(".popup__form_info_edit");
 const nameInput = document.querySelector(".popup__field_name");
 const jobInput = document.querySelector(".popup__field_job");
-const popupField = document.querySelectorAll(".popup__field")
 const buttonAddProfile = document.querySelector(".profile__add-button");
 const btnInsertClose = document.querySelector(".popup__close-button_add");
 const formAddItem = popupAddItem.querySelector(".popup__form_add-image");
@@ -20,12 +18,9 @@ const popupParagraph = document.querySelector(".popup__paragraph");
 const popupCloseImage = document.querySelector(".popup__close-button-image");
 const title = document.querySelector(".profile__title");
 const subtitle = document.querySelector(".profile__paragraph");
-const buttonSubmitAdd = document.querySelector(".popup__submit-button_add");
-const buttonSubmitEdit = document.querySelector(".popup__submit-button_edit");
 const overlayAdd = document.querySelector(".popup__overlay-add");
 const overlayEdit = document.querySelector(".popup__overlay-edit");
 const overlayImg = document.querySelector(".popup__overlay-img");
-const spanError = document.querySelectorAll(".span-error")
 
 const enableValidation = {
   inputSelector: ".popup__field",
@@ -180,7 +175,6 @@ function addItem(event) {
   addCard(inputField, inputTitle)
   closePopup(popupAddItem);
   formAddItem.reset();
-  disabledSubmit();
 }
 
 // Добавляем карточку

@@ -26,7 +26,7 @@ export class Card {
             this._handleTrashClick();
         });
         // // Обработчик открытия попапа карточки
-        this._element.querySelector('.element__img').addEventListener('click', () => {
+        this.cardImage.addEventListener('click', () => {
             this._handleOpenImagePopupClick()
         })
     }
