@@ -21,6 +21,8 @@ const subtitle = document.querySelector(".profile__paragraph");
 const overlayAdd = document.querySelector(".popup__overlay-add");
 const overlayEdit = document.querySelector(".popup__overlay-edit");
 const overlayImg = document.querySelector(".popup__overlay-img");
+const overlay = document.querySelector(".popup__overlay");
+const element = document.querySelector('.element')
 
 const enableValidation = {
   inputSelector: ".popup__field",
@@ -30,8 +32,11 @@ const enableValidation = {
   errorClass: "form__input-error_active",
 };
 
-// export class FormValidator
-import { FormValidator } from './FormValidator.js'
+// import class FormValidator
+import FormValidator from './FormValidator.js'
+
+// import class Popup
+import Popup from './Popup.js';
 
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
@@ -39,12 +44,11 @@ const addformValidator = new FormValidator(enableValidation, formAddItem);
 editformValidator.enableValidation();
 addformValidator.enableValidation();
 
-
-// функция открытие попапа
-function openPopup(popup) {
-  popup.classList.add("popup_opened");
-  document.addEventListener("keyup", onDocumentKeyUp);
-}
+// // функция открытие попапа
+// function openPopup(popup) {
+//   popup.classList.add("popup_opened");
+//   document.addEventListener("keyup", onDocumentKeyUp);
+// }
 
 
 // функция проверки данных профиля
@@ -55,49 +59,62 @@ function checkProfile() {
   openPopup(popupEditInfo);
 }
 
-// функция закрытие попапа
-function closePopup(popup) {
-  popup.classList.remove("popup_opened");
-  document.removeEventListener("keyup", onDocumentKeyUp);
-}
+// // функция закрытие попапа
+// function closePopup(popup) {
+//   popup.classList.remove("popup_opened");
+//   document.removeEventListener("keyup", onDocumentKeyUp);
+// }
 
-// закрытие попапа на ESC
-function onDocumentKeyUp(event) {
-  if (event.key === "Escape") {
-    const popupOpened = document.querySelector(".popup_opened");
-    closePopup(popupOpened);
-  }
+// // закрытие попапа на ESC
+// function onDocumentKeyUp(event) {
+//   if (event.key === "Escape") {
+//     const popupOpened = document.querySelector(".popup_opened");
+//     closePopup(popupOpened);
+//   }
+// }
+
+// Функция открытие попапа при помощи класса Popup
+const openPopup = ((popup) => {
+  const popupOpen = new Popup(popup);
+  popupOpen.open();
+})
+
+const popupClose = (popup, button, overlay) => {
+      const popupClose = new Popup(popup)
+      popupClose.setEventListeners(button, overlay);
 }
 
 // Открытие попапов
 buttonEditProfile.addEventListener("click", function () {
+  openPopup(popupEditInfo)
+  popupClose(popupEditInfo, profileCloseBtn, overlayEdit)
   checkProfile();
   editformValidator.resetValidator();
 
 });
 buttonAddProfile.addEventListener("click", function () {
+  openPopup(popupAddItem)
   addformValidator.resetValidator();
-  openPopup(popupAddItem);
 });
-// Закрытие попапов
-profileCloseBtn.addEventListener("click", function () {
-  closePopup(popupEditInfo);
-});
-btnInsertClose.addEventListener("click", function () {
-  closePopup(popupAddItem);
-});
-popupCloseImage.addEventListener("click", function () {
-  closePopup(popupImg);
-});
-overlayAdd.addEventListener("click", function () {
-  closePopup(popupAddItem);
-});
-overlayEdit.addEventListener("click", function () {
-  closePopup(popupEditInfo);
-});
-overlayImg.addEventListener("click", function () {
-  closePopup(popupImg);
-});
+// // Закрытие попапов
+// profileCloseBtn.addEventListener("click", function () {
+//   closePopup(popupEditInfo);
+// });
+// btnInsertClose.addEventListener("click", function () {
+//   closePopup(popupAddItem);
+// });
+// popupCloseImage.addEventListener("click", function () {
+//   closePopup(popupImg);
+// });
+// overlayAdd.addEventListener("click", function () {
+//   closePopup(popupAddItem);
+// });
+// overlayEdit.addEventListener("click", function () {
+//   closePopup(popupEditInfo);
+// });
+// overlayImg.addEventListener("click", function () {
+//   closePopup(popupImg);
+// });
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -139,26 +156,27 @@ const initialCards = [
   },
 ];
 
+
+// Импортируем класс Section
+import Section from './Section.js';
+
 // Импортируем класс Card 
-import { Card } from './Card.js';
+import Card from './Card.js';
 
-// создаем карточку
-const createCard = (name, link) => {
-  const card = new Card (name, link, '#template', openImage)
-  const cardElement = card.generateCard()
-  return cardElement
-}
-// проходимся по массиву и добавляем карточки из массива на страницу
-initialCards.forEach((item) => {
-  createCard(item);
-  elements.prepend(createCard(item.name, item.link));
-})
-//добавляем карточку на страницу
-const addCard = (link, name) => {
-  createCard(name, link)
-  elements.prepend(createCard(name, link))
-}
+// Создаем новый класс на основе Section
+const section = new Section({
+  items: initialCards,
+  renderer: (cardItem) =>{
+    const card = new Card (cardItem.name, cardItem.link, '#template', openImage)
+    const cardElement = card.generateCard()
 
+    section.addItem(cardElement)
+  }
+}, 
+'.elements'
+);
+
+section.rendererItems()
 
 // Экспортируем функцию открытия изображения в Card.js
 export function openImage (name, link){
@@ -167,15 +185,15 @@ export function openImage (name, link){
   popupParagraph.textContent = name;
   openPopup(popupImg);
 }
-// Функция добавление карточки на страницу
-function addItem(event) {
-  event.preventDefault();
-  const inputField = imageField.value;
-  const inputTitle = imageTitle.value;
-  addCard(inputField, inputTitle)
-  closePopup(popupAddItem);
-  formAddItem.reset();
-}
+// // Функция добавление карточки на страницу
+// function addItem(event) {
+//   event.preventDefault();
+//   const inputField = imageField.value;
+//   const inputTitle = imageTitle.value;
+//   addCard(inputField, inputTitle)
+//   closePopup(popupAddItem);
+//   formAddItem.reset();
+// }
 
-// Добавляем карточку
-formAddItem.addEventListener("submit", addItem);
+// // Добавляем карточку
+// formAddItem.addEventListener("submit", addItem);
