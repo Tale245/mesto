@@ -74,47 +74,31 @@ function checkProfile() {
 // }
 
 // Функция открытие попапа при помощи класса Popup
-const openPopup = ((popup) => {
+const openPopup = ((popup, button, overlay) => {
   const popupOpen = new Popup(popup);
   popupOpen.open();
+  popupOpen.setEventListeners(button, overlay)
 })
 
-const popupClose = (popup, button, overlay) => {
-      const popupClose = new Popup(popup)
-      popupClose.setEventListeners(button, overlay);
-}
+const closePopup = ((popup) => {
+  const popupClose = new Popup(popup);
+  popupClose.close()
+})
 
 // Открытие попапов
+
+// Открытия попап редактирования профиля
 buttonEditProfile.addEventListener("click", function () {
-  openPopup(popupEditInfo)
-  popupClose(popupEditInfo, profileCloseBtn, overlayEdit)
+  openPopup(popupEditInfo, profileCloseBtn, overlayEdit)
   checkProfile();
   editformValidator.resetValidator();
-
 });
+
+// Кнопка открытия попап добавления карточки
 buttonAddProfile.addEventListener("click", function () {
-  openPopup(popupAddItem)
+  openPopup(popupAddItem, btnInsertClose, overlayAdd)
   addformValidator.resetValidator();
 });
-// // Закрытие попапов
-// profileCloseBtn.addEventListener("click", function () {
-//   closePopup(popupEditInfo);
-// });
-// btnInsertClose.addEventListener("click", function () {
-//   closePopup(popupAddItem);
-// });
-// popupCloseImage.addEventListener("click", function () {
-//   closePopup(popupImg);
-// });
-// overlayAdd.addEventListener("click", function () {
-//   closePopup(popupAddItem);
-// });
-// overlayEdit.addEventListener("click", function () {
-//   closePopup(popupEditInfo);
-// });
-// overlayImg.addEventListener("click", function () {
-//   closePopup(popupImg);
-// });
 
 // Обработчик «отправки» формы, хотя пока
 // она никуда отправляться не будет
@@ -124,6 +108,7 @@ function handleProfileFormSubmit(evt) {
   subtitle.textContent = jobInput.value;
   closePopup(popupEditInfo);
 }
+
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 profileForm.addEventListener("submit", handleProfileFormSubmit);
@@ -163,14 +148,18 @@ import Section from './Section.js';
 // Импортируем класс Card 
 import Card from './Card.js';
 
+const createCard = (name, link) => {
+  const card = new Card (name,link, '#template', openImage)
+  const cardElement = card.generateCard()
+  return cardElement;
+}
+
 // Создаем новый класс на основе Section
 const section = new Section({
   items: initialCards,
   renderer: (cardItem) =>{
-    const card = new Card (cardItem.name, cardItem.link, '#template', openImage)
-    const cardElement = card.generateCard()
-
-    section.addItem(cardElement)
+    createCard(cardItem.name,cardItem.link, '#template', openImage)
+    section.addItem(createCard(cardItem.name, cardItem.link))
   }
 }, 
 '.elements'
@@ -178,22 +167,27 @@ const section = new Section({
 
 section.rendererItems()
 
+const addCard = (link, name) => {
+  createCard(name, link);
+  elements.prepend(createCard(name, link))
+}
+
 // Экспортируем функцию открытия изображения в Card.js
 export function openImage (name, link){
   imagePopup.src = link;
   imagePopup.alt = name;
   popupParagraph.textContent = name;
-  openPopup(popupImg);
+  openPopup(popupImg, popupCloseImage, overlayImg);
 }
-// // Функция добавление карточки на страницу
-// function addItem(event) {
-//   event.preventDefault();
-//   const inputField = imageField.value;
-//   const inputTitle = imageTitle.value;
-//   addCard(inputField, inputTitle)
-//   closePopup(popupAddItem);
-//   formAddItem.reset();
-// }
+// Функция добавление карточки на страницу
+function addItem(event) {
+  event.preventDefault();
+  const inputField = imageField.value;
+  const inputTitle = imageTitle.value;
+  addCard(inputField, inputTitle)
+  closePopup(popupAddItem);
+  formAddItem.reset();
+}
 
-// // Добавляем карточку
-// formAddItem.addEventListener("submit", addItem);
+// Добавляем карточку
+formAddItem.addEventListener("submit", addItem);
