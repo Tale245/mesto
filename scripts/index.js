@@ -21,6 +21,34 @@ export const subtitle = document.querySelector(".profile__paragraph");
 const overlayAdd = document.querySelector(".popup__overlay-add");
 const overlayEdit = document.querySelector(".popup__overlay-edit");
 const overlayImg = document.querySelector(".popup__overlay-img");
+const overlay = document.querySelector(".popup__overlay");
+const element = document.querySelector('.element')
+
+const enableValidation = {
+  inputSelector: ".popup__field",
+  submitButtonSelector: ".popup__submit-button",
+  inactiveButtonClass: "button__disabled",
+  inputErrorClass: "form__input_type_error",
+  errorClass: "form__input-error_active",
+};
+
+// import class FormValidator
+import FormValidator from './FormValidator.js'
+
+// import class Popup
+import Popup from './Popup.js';
+
+// Для каждой проверяемой формы создали экземпляр класса FormValidator
+const editformValidator = new FormValidator(enableValidation, profileForm);
+const addformValidator = new FormValidator(enableValidation, formAddItem);
+editformValidator.enableValidation();
+addformValidator.enableValidation();
+
+// // функция открытие попапа
+// function openPopup(popup) {
+//   popup.classList.add("popup_opened");
+//   document.addEventListener("keyup", onDocumentKeyUp);
+// }
 
 const enableValidation = {
   inputSelector: ".popup__field",
@@ -67,6 +95,8 @@ const userInfo = new UserInfo(title, subtitle)
 
 
 // Открытие попапов
+
+// Открытия попап редактирования профиля
 buttonEditProfile.addEventListener("click", function () {
   const user = userInfo.getUserInfo()
 
@@ -78,6 +108,8 @@ buttonEditProfile.addEventListener("click", function () {
   editformValidator.resetValidator();
 
 });
+
+// Кнопка открытия попап добавления карточки
 buttonAddProfile.addEventListener("click", function () {
   addformValidator.resetValidator();
   openPopup(popupAddItem);
