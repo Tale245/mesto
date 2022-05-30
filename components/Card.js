@@ -1,9 +1,9 @@
-export class Card {
-    constructor(cardName, cardLink, templateSelector, openImage){
+export default class Card {
+    constructor(cardName, cardLink, templateSelector, handleCardClick){
         this._cardName = cardName;
         this._cardLink = cardLink;
         this._templateSelector = templateSelector;
-        this._openImage = openImage;
+        this._handleCardClick = handleCardClick;
         
     }
     _getTemplate(){
@@ -40,7 +40,7 @@ export class Card {
     }
     //открытие попапа карточки
     _handleOpenImagePopupClick(){
-        this._openImage(this._cardName, this._cardLink);
+        this._handleCardClick(this._cardName, this._cardLink);
     }
 
     generateCard(){
