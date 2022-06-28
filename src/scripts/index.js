@@ -1,7 +1,6 @@
-import "../pages/index.css"
+// import "../pages/index.css"
 // export class FormValidator
 import FormValidator from "../components/FormValidator.js";
-import Popup from "../components/Popup.js";
 import UserInfo from "../components/UserInfo.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import Card from "../components/Card.js";
@@ -35,38 +34,14 @@ editformValidator.enableValidation();
 addformValidator.enableValidation();
 
 // функция открытие попапа
-const openPopup = (popup) => {
-  const popupOpen = new Popup(popup);
-  popupOpen.open();
-};
-
-const setEventListeners = (popup) => {
-  const popupWithSetEventListeners = new Popup(popup);
-  popupWithSetEventListeners.setEventListeners();
-};
 
 const userInfo = new UserInfo(title, subtitle);
 
-// Открытие попапов
-buttonEditProfile.addEventListener("click", function () {
-  const infoAboutUser = userInfo.getUserInfo();
-  nameInput.value = infoAboutUser.userName;
-  jobInput.value = infoAboutUser.infoAboutUser;
-
-  openPopup(popupEditInfo);
-  setEventListeners(popupEditInfo);
-  editformValidator.resetValidator();
-});
-buttonAddProfile.addEventListener("click", function () {
-  addformValidator.resetValidator();
-  openPopup(popupAddItem);
-  setEventListeners(popupAddItem);
-});
 
 const openImage = (name, link) => {
-  const PopupImage = new PopupWithImage(popupImg);
-  PopupImage.open(name, link);
-  setEventListeners(popupImg);
+  const popupImage = new PopupWithImage('.popup_image-scale');
+  popupImage.open(name, link);
+  popupImage.setEventListeners()
 };
 // создаем карточку
 const createCard = (name, link) => {
@@ -90,20 +65,31 @@ const section = new Section(
 section.rendererItems();
 
 const popupEdtiProfile = new PopupWithForm({
-  popupSelector: popupEditInfo,
-  submitForm: () => {
-    userInfo.setUserInfo(nameInput, jobInput);
+  popupSelector: '.popup_edit-info',
+  submitForm: (cardData) => {
+    userInfo.setUserInfo(cardData);
   },
 });
 
 const popupAddCard = new PopupWithForm({
-  popupSelector: popupAddItem,
-  submitForm: () => {
-    const inputField = imageField.value;
-    const inputTitle = imageTitle.value;
-    section.addItem(createCard(inputTitle, inputField));
+  popupSelector: '.popup_add-item',
+  submitForm: (cardData) => {
+    section.addItem(createCard(cardData.name, cardData.value));
   },
 });
 
 popupEdtiProfile.setEventListeners();
 popupAddCard.setEventListeners();
+
+// Открытие попапов
+buttonEditProfile.addEventListener("click", function () {
+  const infoAboutUser = userInfo.getUserInfo();
+  nameInput.value = infoAboutUser.userName;
+  jobInput.value = infoAboutUser.infoAboutUser;
+  editformValidator.resetValidator();
+  popupEdtiProfile.open()
+});
+buttonAddProfile.addEventListener("click", function () {
+  addformValidator.resetValidator();
+  popupAddCard.open()
+});
