@@ -35,11 +35,10 @@ addformValidator.enableValidation();
 
 // функция открытие попапа
 
-const userInfo = new UserInfo(title, subtitle);
-
+const userInfo = new UserInfo({userName:'.profile__title', infoAboutUser: '.profile__paragraph'});
+const popupImage = new PopupWithImage('.popup_image-scale');
 
 const openImage = (name, link) => {
-  const popupImage = new PopupWithImage('.popup_image-scale');
   popupImage.open(name, link);
   popupImage.setEventListeners()
 };
@@ -66,15 +65,15 @@ section.rendererItems();
 
 const popupEdtiProfile = new PopupWithForm({
   popupSelector: '.popup_edit-info',
-  submitForm: (cardData) => {
-    userInfo.setUserInfo(cardData);
+  submitForm: (data) => {
+    userInfo.setUserInfo(data.name, data.job);
   },
 });
 
 const popupAddCard = new PopupWithForm({
   popupSelector: '.popup_add-item',
-  submitForm: (cardData) => {
-    section.addItem(createCard(cardData.name, cardData.value));
+  submitForm: (data) => {
+    section.addItem(createCard(data.imageTitle,  data.imageLink))
   },
 });
 
