@@ -37,10 +37,10 @@ addformValidator.enableValidation();
 
 const userInfo = new UserInfo({userName:'.profile__title', infoAboutUser: '.profile__paragraph'});
 const popupImage = new PopupWithImage('.popup_image-scale');
+popupImage.setEventListeners()
 
 const openImage = (name, link) => {
   popupImage.open(name, link);
-  popupImage.setEventListeners()
 };
 // создаем карточку
 const createCard = (name, link) => {
