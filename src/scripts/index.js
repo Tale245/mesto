@@ -6,6 +6,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import Card from "../components/Card.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import Api from "../components/Api.js";
 // Импортируем константы
 import {
   buttonEditProfile,
@@ -21,12 +22,29 @@ import {
   popupImg,
   title,
   subtitle,
+  profileImage,
+  elements
 } from "../utils/constants.js";
-// Импортируем карточки
-import { initialCards } from "../utils/initialCards.js";
 // Импорт объектов для валидации
 import { enableValidation } from "../utils/enableValidation.js";
 
+const options = {
+  url: 'https://nomoreparties.co/v1/cohort-45',
+  headers: {
+    authorization: '0461d828-cc38-4a4a-b920-219e98ca54de',
+  }
+};
+
+const api = new Api(options);
+api.userInfo()
+.then(res => res.json())
+.then((result) => {
+    console.log(result)
+    title.textContent = result.name;
+    subtitle.textContent = result.about;
+    profileImage.src = result.avatar;
+  })
+.catch(err => console.log(err))
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
 const addformValidator = new FormValidator(enableValidation, formAddItem);
@@ -52,16 +70,21 @@ const createCard = (name, link) => {
 // Добавляем карточик из массива
 const section = new Section(
   {
-    items: initialCards,
     renderer: (item) => {
-      createCard(item.name, item.link, "#template", openImage);
       section.addItem(createCard(item.name, item.link));
     },
   },
   ".elements"
-);
+)
 
-section.rendererItems();
+api.addPhoto()
+.then(res => res.json())
+.then((result) => {
+  result.forEach((item) => {
+    section.addItem(createCard(item.name, item.link))
+  })
+})
+
 
 const popupEdtiProfile = new PopupWithForm({
   popupSelector: '.popup_edit-info',
