@@ -30,9 +30,7 @@ import { enableValidation } from "../utils/enableValidation.js";
 
 const options = {
   url: 'https://nomoreparties.co/v1/cohort-45',
-  headers: {
-    authorization: '0461d828-cc38-4a4a-b920-219e98ca54de',
-  }
+  authorization: '0461d828-cc38-4a4a-b920-219e98ca54de'
 };
 
 const api = new Api(options);
@@ -45,6 +43,7 @@ api.userInfo()
     profileImage.src = result.avatar;
   })
 .catch(err => console.log(err))
+
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
 const addformValidator = new FormValidator(enableValidation, formAddItem);
@@ -56,6 +55,7 @@ addformValidator.enableValidation();
 const userInfo = new UserInfo({userName:'.profile__title', infoAboutUser: '.profile__paragraph'});
 const popupImage = new PopupWithImage('.popup_image-scale');
 popupImage.setEventListeners()
+
 
 const openImage = (name, link) => {
   popupImage.open(name, link);
@@ -77,25 +77,39 @@ const section = new Section(
   ".elements"
 )
 
-api.addPhoto()
+api.getPhoto()
 .then(res => res.json())
 .then((result) => {
   result.forEach((item) => {
     section.addItem(createCard(item.name, item.link))
   })
 })
+.catch((err) => {
+ console.log(err)
+})
 
 
 const popupEdtiProfile = new PopupWithForm({
   popupSelector: '.popup_edit-info',
   submitForm: (data) => {
-    userInfo.setUserInfo(data.name, data.job);
+    api.updateUserInfo(data)
+    .then((data) => {
+      userInfo.setUserInfo(data.name, data.job);
+    })
+    .catch((err) => {
+      console.log(err)
+     })
   },
 });
 
 const popupAddCard = new PopupWithForm({
   popupSelector: '.popup_add-item',
   submitForm: (data) => {
+    api.addPhoto(data)
+  .then(res => res.json())
+  .then(result => console.log(result))
+  .catch((err) => console.log(err))
+
     section.addItem(createCard(data.imageTitle,  data.imageLink))
   },
 });
