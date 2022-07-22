@@ -2,10 +2,6 @@ export default class Api {
   constructor(options) {
     this.url = options.url;
     this.authorization = options.authorization;
-    this.urlName = document.querySelector("#name");
-    this.urlJob = document.querySelector("#job");
-    this.nameProfile = document.querySelector(".profile__title");
-    this.nameJob = document.querySelector(".profile__paragraph");
   }
 
   userInfo() {
@@ -38,6 +34,7 @@ export default class Api {
   }
 
   addPhoto(data) {
+    console.log(data)
     return fetch(`${this.url}/cards`, {
       method: "POST",
       headers: {
@@ -45,8 +42,8 @@ export default class Api {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: data.name,
-        link: data.link
+        name: data.imageTitle,
+        link: data.imageLink,
       })
     })
   }

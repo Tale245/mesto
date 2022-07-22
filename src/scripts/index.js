@@ -41,6 +41,7 @@ api.userInfo()
     title.textContent = result.name;
     subtitle.textContent = result.about;
     profileImage.src = result.avatar;
+    console.log(result)
   })
 .catch(err => console.log(err))
 
@@ -93,8 +94,10 @@ const popupEdtiProfile = new PopupWithForm({
   popupSelector: '.popup_edit-info',
   submitForm: (data) => {
     api.updateUserInfo(data)
+    .then(res => res.json())
     .then((data) => {
-      userInfo.setUserInfo(data.name, data.job);
+      console.log(data)
+      userInfo.setUserInfo(data.name, data.about);
     })
     .catch((err) => {
       console.log(err)
@@ -106,11 +109,13 @@ const popupAddCard = new PopupWithForm({
   popupSelector: '.popup_add-item',
   submitForm: (data) => {
     api.addPhoto(data)
-  .then(res => res.json())
-  .then(result => console.log(result))
+    .then(res => res.json())
+    .then((data) => {
+      console.log(data)
+      section.addItem(createCard(data.name, data.link))
+    })
   .catch((err) => console.log(err))
 
-    section.addItem(createCard(data.imageTitle,  data.imageLink))
   },
 });
 
