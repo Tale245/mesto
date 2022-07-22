@@ -23,7 +23,7 @@ import {
   title,
   subtitle,
   profileImage,
-  elements
+  elements,
 } from "../utils/constants.js";
 // Импорт объектов для валидации
 import { enableValidation } from "../utils/enableValidation.js";
@@ -41,10 +41,9 @@ api.userInfo()
     title.textContent = result.name;
     subtitle.textContent = result.about;
     profileImage.src = result.avatar;
-    console.log(result)
+    console.log(result._id)
   })
 .catch(err => console.log(err))
-
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
 const addformValidator = new FormValidator(enableValidation, formAddItem);
@@ -78,11 +77,20 @@ const section = new Section(
   ".elements"
 )
 
+
 api.getPhoto()
 .then(res => res.json())
 .then((result) => {
   result.forEach((item) => {
+    console.log(item)
     section.addItem(createCard(item.name, item.link))
+    const elementLikes = document.querySelector('.element__likes')
+    elementLikes.textContent = item.likes.length;
+    const trashButton = document.querySelector('.element__trash-button')
+    if(item.owner._id !== '9c41566f98c57641e440356a'){
+      trashButton.remove()
+    }
+    // const trashButton = document.querySelector('.element__trash-button')
   })
 })
 .catch((err) => {
@@ -104,7 +112,6 @@ const popupEdtiProfile = new PopupWithForm({
      })
   },
 });
-
 const popupAddCard = new PopupWithForm({
   popupSelector: '.popup_add-item',
   submitForm: (data) => {
@@ -115,7 +122,6 @@ const popupAddCard = new PopupWithForm({
       section.addItem(createCard(data.name, data.link))
     })
   .catch((err) => console.log(err))
-
   },
 });
 

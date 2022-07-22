@@ -79,12 +79,26 @@
       </section>
     </div>
   </div>
+  <div class="popup popup__confirm">
+    <div class="popup__overlay"></div>
+    <div class="popup__container popup__container_confirm">
+      <button class="popup__close-button popup__close-button-image"></button>
+      <h3 class="popup__title popup__title-confirm">Вы уверены?</h3>
+      <button class="popup__submit-button popup__button-confirm"> 
+        <span class="popup__text-button ">Да</span>
+      </button>
+      
+    </div>
+  </div>
   <template id="template">
     <div class="element">
       <img class="element__img" alt="изображение" />
       <div class="element__item">
         <h2 class="element__title"></h2>
+        <div class="element__container">
         <button class="element__button"></button>
+        <p class="element__likes">0</p>
+      </div>
         <button class="element__trash-button"></button>
       </div>
     </div>

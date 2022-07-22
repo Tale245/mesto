@@ -1,5 +1,7 @@
 .element__trash-button{
   background: none;
+  background-repeat: none;
+  object-fit: cover;
   background-image: url(../../../images/Trash.svg);
   border: none;
   outline: none;

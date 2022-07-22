@@ -12,7 +12,7 @@ const popupImg = document.querySelector(".popup_image-scale");
 const title = document.querySelector(".profile__title");
 const subtitle = document.querySelector(".profile__paragraph");
 const profileImage = document.querySelector('.profile__image');
-const elements = document.querySelector('.elements')
+const elements = document.querySelector('.elements');
 export {buttonEditProfile, popupAddItem, popupEditInfo, profileForm, nameInput, jobInput, 
   buttonAddProfile, formAddItem, imageField, 
   imageTitle, popupImg, title, subtitle, profileImage, elements}
