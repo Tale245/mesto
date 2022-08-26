@@ -6,6 +6,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import Card from "../components/Card.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
+import Api from "../components/Api.js";
 // Импортируем константы
 import {
   buttonEditProfile,
@@ -22,10 +23,16 @@ import {
   title,
   subtitle,
 } from "../utils/constants.js";
-// Импортируем карточки
-import { initialCards } from "../utils/initialCards.js";
 // Импорт объектов для валидации
 import { enableValidation } from "../utils/enableValidation.js";
+
+const user = {
+  cohort: "cohort-49",
+  authorization: "5ef57d1b-1ea7-434a-b183-6df5295fe05d",
+};
+
+const api = new Api(user);
+// api.saveUserName()
 
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
@@ -35,9 +42,12 @@ addformValidator.enableValidation();
 
 // функция открытие попапа
 
-const userInfo = new UserInfo({userName:'.profile__title', infoAboutUser: '.profile__paragraph'});
-const popupImage = new PopupWithImage('.popup_image-scale');
-popupImage.setEventListeners()
+const userInfo = new UserInfo({
+  userName: ".profile__title",
+  infoAboutUser: ".profile__paragraph",
+});
+const popupImage = new PopupWithImage(".popup_image-scale");
+popupImage.setEventListeners();
 
 const openImage = (name, link) => {
   popupImage.open(name, link);
@@ -51,29 +61,41 @@ const createCard = (name, link) => {
 
 // Добавляем карточик из массива
 const section = new Section(
-  {
-    items: initialCards,
-    renderer: (item) => {
+  { 
+    renderer: api.getCards().then((res) => {
+      return res.forEach((item) => {
       createCard(item.name, item.link, "#template", openImage);
       section.addItem(createCard(item.name, item.link));
-    },
+      })
+    })
   },
   ".elements"
 );
 
-section.rendererItems();
-
 const popupEdtiProfile = new PopupWithForm({
-  popupSelector: '.popup_edit-info',
-  submitForm: (data) => {
-    userInfo.setUserInfo(data.name, data.job);
-  },
+  popupSelector: ".popup_edit-info",
+  submitForm: api.userName().then((data) => {
+    return userInfo.setUserInfo(data.name, data.about);
+  }),
 });
+// const popupEdtiProfile = new PopupWithForm({
+//   popupSelector: ".popup_edit-info",
+//   submitForm: (data) => {
+//     api.userName(data)
+//     .then((data) => {
+//       console.log(data)
+//       userInfo.setUserInfo(data.name, data.about);
+//     })
+//     .catch((err) => {
+//       console.log(err)
+//      })
+//   },
+// });
 
 const popupAddCard = new PopupWithForm({
-  popupSelector: '.popup_add-item',
+  popupSelector: ".popup_add-item",
   submitForm: (data) => {
-    section.addItem(createCard(data.imageTitle,  data.imageLink))
+    section.addItem(createCard(data.imageTitle, data.imageLink));
   },
 });
 
@@ -86,9 +108,9 @@ buttonEditProfile.addEventListener("click", function () {
   nameInput.value = infoAboutUser.userName;
   jobInput.value = infoAboutUser.infoAboutUser;
   editformValidator.resetValidator();
-  popupEdtiProfile.open()
+  popupEdtiProfile.open();
 });
 buttonAddProfile.addEventListener("click", function () {
   addformValidator.resetValidator();
-  popupAddCard.open()
+  popupAddCard.open();
 });
