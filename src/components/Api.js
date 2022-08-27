@@ -42,7 +42,7 @@ export default class Api {
   }
 
   // Сохранение измененных данных профиля
-  saveUserName(){
+  saveUserName(data){
     return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/users/me`, {
       method: 'PATCH',
       headers:{
@@ -50,8 +50,8 @@ export default class Api {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: 'Marie Skłodowska Curie',
-        about: 'Physicist and Chemist'
+        name: data.name,
+        about: data.job
       })
     })
     .then(res => {
@@ -66,5 +66,19 @@ export default class Api {
     })
   }
 
+  uploadCard(data){
+    return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards`, {
+      method: 'POST',
+      headers:{
+        authorization: `${this.userData.authorization}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: data.imageTitle,
+        link: data.imageLink,
+        
+      })
+    })
+  }
 
 }

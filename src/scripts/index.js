@@ -21,7 +21,7 @@ import {
   imageTitle,
   popupImg,
   title,
-  subtitle,
+  subtitle
 } from "../utils/constants.js";
 // Импорт объектов для валидации
 import { enableValidation } from "../utils/enableValidation.js";
@@ -32,7 +32,7 @@ const user = {
 };
 
 const api = new Api(user);
-// api.saveUserName()
+
 
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
@@ -46,6 +46,16 @@ const userInfo = new UserInfo({
   userName: ".profile__title",
   infoAboutUser: ".profile__paragraph",
 });
+
+api
+  .userName()
+  .then((result) => {
+    userInfo.setUserInfo(result.name, result.about);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
 const popupImage = new PopupWithImage(".popup_image-scale");
 popupImage.setEventListeners();
 
@@ -61,43 +71,61 @@ const createCard = (name, link) => {
 
 // Добавляем карточик из массива
 const section = new Section(
-  { 
-    renderer: api.getCards().then((res) => {
-      return res.forEach((item) => {
-      createCard(item.name, item.link, "#template", openImage);
-      section.addItem(createCard(item.name, item.link));
+  {
+    renderer: api
+      .getCards()
+      .then((res) => {
+        return res.forEach((item) => {
+          console.log(item.likes.length)
+          createCard(item.name, item.link, "#template", openImage);
+          section.addItem(createCard(item.name, item.link));
+          const like = document.querySelector('.element__like')
+          like.textContent = item.likes.length
+        });
       })
-    })
+      .catch((error) => {
+        console.log(error);
+      }),
   },
   ".elements"
 );
 
-const popupEdtiProfile = new PopupWithForm({
-  popupSelector: ".popup_edit-info",
-  submitForm: api.userName().then((data) => {
-    return userInfo.setUserInfo(data.name, data.about);
-  }),
-});
 // const popupEdtiProfile = new PopupWithForm({
 //   popupSelector: ".popup_edit-info",
-//   submitForm: (data) => {
-//     api.userName(data)
-//     .then((data) => {
-//       console.log(data)
-//       userInfo.setUserInfo(data.name, data.about);
-//     })
-//     .catch((err) => {
-//       console.log(err)
-//      })
-//   },
+//   submitForm: api.saveUserName(data).then((data) => {
+//     userInfo.setUserInfo(data.name, data.about);
+//   }),
 // });
+const popupEdtiProfile = new PopupWithForm({
+  popupSelector: ".popup_edit-info",
+  submitForm: (data) => {
+    api.saveUserName(data)
+      .then((data) => {
+        console.log(data);
+        userInfo.setUserInfo(data.name, data.about);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+});
 
 const popupAddCard = new PopupWithForm({
   popupSelector: ".popup_add-item",
   submitForm: (data) => {
-    section.addItem(createCard(data.imageTitle, data.imageLink));
+    api.uploadCard(data).then(() => {
+      section.addItem(createCard(data.imageTitle, data.imageLink));
+    }).catch((err) => {
+      console.log(err)
+    })
   },
 });
+// const popupAddCard = new PopupWithForm({
+//   popupSelector: ".popup_add-item",
+//   submitForm: (data) => {
+//       section.addItem(createCard(data.imageTitle, data.imageLink));
+//   },
+// });
 
 popupEdtiProfile.setEventListeners();
 popupAddCard.setEventListeners();
