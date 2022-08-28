@@ -81,4 +81,15 @@ export default class Api {
     })
   }
 
+  deleteCard(id){
+    return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${id}`,{
+      method: 'DELETE',
+      headers: {
+        authorization: `${this.userData.authorization}`,
+        'Content-Type': 'application/json'
+      }
+    }
+    )
+  }
+
 }

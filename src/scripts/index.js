@@ -7,6 +7,7 @@ import Card from "../components/Card.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import Api from "../components/Api.js";
+import PopupWithDelete from "../components/PopupWithDelete.js";
 // Импортируем константы
 import {
   buttonEditProfile,
@@ -40,7 +41,6 @@ const addformValidator = new FormValidator(enableValidation, formAddItem);
 editformValidator.enableValidation();
 addformValidator.enableValidation();
 
-// функция открытие попапа
 
 const userInfo = new UserInfo({
   userName: ".profile__title",
@@ -62,6 +62,12 @@ popupImage.setEventListeners();
 const openImage = (name, link) => {
   popupImage.open(name, link);
 };
+
+const popupConfirm = new PopupWithDelete({
+  popupSelector: ".popup_confirm"
+})
+
+
 // создаем карточку
 const createCard = (name, link) => {
   const card = new Card(name, link, "#template", openImage);
@@ -90,12 +96,6 @@ const section = new Section(
   ".elements"
 );
 
-// const popupEdtiProfile = new PopupWithForm({
-//   popupSelector: ".popup_edit-info",
-//   submitForm: api.saveUserName(data).then((data) => {
-//     userInfo.setUserInfo(data.name, data.about);
-//   }),
-// });
 const popupEdtiProfile = new PopupWithForm({
   popupSelector: ".popup_edit-info",
   submitForm: (data) => {
@@ -127,6 +127,7 @@ const popupAddCard = new PopupWithForm({
 //   },
 // });
 
+
 popupEdtiProfile.setEventListeners();
 popupAddCard.setEventListeners();
 
@@ -142,3 +143,4 @@ buttonAddProfile.addEventListener("click", function () {
   addformValidator.resetValidator();
   popupAddCard.open();
 });
+
