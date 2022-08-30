@@ -76,8 +76,19 @@ export default class Api {
       body: JSON.stringify({
         name: data.imageTitle,
         link: data.imageLink,
+        id: data._id
         
       })
+    })
+    .then(res => {
+      if(res.ok){
+
+        return res.json()
+        
+      } else {
+
+        return console.log(res.status)
+      }
     })
   }
 
@@ -87,9 +98,22 @@ export default class Api {
       headers: {
         authorization: `${this.userData.authorization}`,
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({
+        _id: id 
+      })
     }
     )
+    .then(res => {
+      if(res.ok){
+
+        return res.json()
+        
+      } else {
+
+        return console.log(res.status)
+      }
+    })
   }
 
 }

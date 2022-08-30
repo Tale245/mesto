@@ -67,10 +67,29 @@ const popupConfirm = new PopupWithDelete({
   popupSelector: ".popup_confirm"
 })
 
+popupConfirm.setEventListeners()
+
+const handleDeleteCard = (card) => {
+  popupConfirm.open()
+  popupConfirm.setSubmitAction(() => {
+    api.deleteCard(card.id).then(() => {
+      card.handleDeleteCard()
+      popupConfirm.close()
+    })
+  })
+}
 
 // создаем карточку
-const createCard = (name, link) => {
-  const card = new Card(name, link, "#template", openImage);
+const createCard = ({name, link, id}) => {
+
+  const card = new Card(
+    {handleClickDeleteIcon: handleDeleteCard,
+    id: id},
+    name,
+    link,
+    "#template",
+    openImage);
+
   const cardElement = card.generateCard();
   return cardElement;
 };
@@ -82,11 +101,13 @@ const section = new Section(
       .getCards()
       .then((res) => {
         return res.forEach((item) => {
-          console.log(item.likes.length)
-          createCard(item.name, item.link, "#template", openImage);
-          section.addItem(createCard(item.name, item.link));
+          section.addItem(createCard({name: item.name, link: item.link, id: item._id}));
           const like = document.querySelector('.element__like')
-          like.textContent = item.likes.length
+          like.textContent = item.likes.length;
+          const trashButton = document.querySelector('.element__trash-button')
+          if(item.owner._id !== 'd5672d92285eb30f8077412e'){
+            trashButton.remove()
+          }
         });
       })
       .catch((error) => {
@@ -113,20 +134,13 @@ const popupEdtiProfile = new PopupWithForm({
 const popupAddCard = new PopupWithForm({
   popupSelector: ".popup_add-item",
   submitForm: (data) => {
-    api.uploadCard(data).then(() => {
-      section.addItem(createCard(data.imageTitle, data.imageLink));
+    api.uploadCard(data).then(() => { 
+      section.addItem(createCard({name: data.imageTitle, link: data.imageLink}));
     }).catch((err) => {
       console.log(err)
     })
   },
 });
-// const popupAddCard = new PopupWithForm({
-//   popupSelector: ".popup_add-item",
-//   submitForm: (data) => {
-//       section.addItem(createCard(data.imageTitle, data.imageLink));
-//   },
-// });
-
 
 popupEdtiProfile.setEventListeners();
 popupAddCard.setEventListeners();

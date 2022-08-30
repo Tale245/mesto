@@ -1,10 +1,11 @@
 export default class Card {
-    constructor(cardName, cardLink, templateSelector, handleCardClick){
+    constructor({handleClickDeleteIcon, id}, cardName, cardLink, templateSelector, handleCardClick){
         this._cardName = cardName;
         this._cardLink = cardLink;
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
-        
+        this._handleClickDeleteIcon = handleClickDeleteIcon
+        this.id = id
     }
     _getTemplate(){
         const cardElement = document
@@ -23,7 +24,7 @@ export default class Card {
         })
         //Обработчик события удаления карточки
         this._element.querySelector('.element__trash-button').addEventListener('click', () => {
-            this._handleTrashClick();
+            this._handleClickDeleteIcon(this)
         });
         // // Обработчик открытия попапа карточки
         this.cardImage.addEventListener('click', () => {
@@ -35,12 +36,13 @@ export default class Card {
         this.elementButton.classList.toggle('element__button_active');
     }
     // Удаление карточки
-    _handleTrashClick(){
+    handleDeleteCard(){
         this._element.remove();
     }
     //открытие попапа карточки
     _handleOpenImagePopupClick(){
         this._handleCardClick(this._cardName, this._cardLink);
+        debugger
     }
 
     generateCard(){
@@ -51,6 +53,8 @@ export default class Card {
     this.cardImage = this._element.querySelector('.element__img')
     this._setEventListeners()
 
+    // Добавляю айди в карточку
+    this.cardImage.id = this.id
     // Добавим данные в карточку
     this.cardImage.src = this._cardLink;
     this.cardImage.alt = this._cardName;
