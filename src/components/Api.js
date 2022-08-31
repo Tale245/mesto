@@ -74,9 +74,8 @@ export default class Api {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: data.imageTitle,
-        link: data.imageLink,
-        id: data._id
+        name: data.name,
+        link: data.link
         
       })
     })
@@ -92,7 +91,8 @@ export default class Api {
     })
   }
 
-  deleteCard(id){
+  deleteCard(data){
+    const id = data._data._id
     return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${id}`,{
       method: 'DELETE',
       headers: {
@@ -100,7 +100,7 @@ export default class Api {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        _id: id 
+        _id: id
       })
     }
     )
