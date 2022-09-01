@@ -3,6 +3,17 @@ export default class Api {
     this.userData = userData;
   }
 
+  res(res){
+    if(res.ok){
+
+      return res.json()
+      
+    } else {
+
+      return console.log(res.status)
+    }
+  }
+
   // Загрузка данных о пользователе с сервера
   userName(){
     return fetch(`https://nomoreparties.co/v1/${this.userData.cohort}/users/me`, {
@@ -11,14 +22,7 @@ export default class Api {
       } 
     })
     .then(res => {
-      if(res.ok){
-
-        return res.json()
-        
-      } else {
-
-        return console.log(res.status)
-      }
+      return this.res(res)
     })
   }
 
@@ -30,14 +34,7 @@ export default class Api {
       }
     })
     .then(res => {
-      if(res.ok){
-
-        return res.json()
-        
-      } else {
-
-        return console.log(res.status)
-      }
+      return this.res(res)
     })
   }
 
@@ -55,18 +52,11 @@ export default class Api {
       })
     })
     .then(res => {
-      if(res.ok){
-
-        return res.json()
-        
-      } else {
-
-        return console.log(res.status)
-      }
+      return this.res(res)
     })
   }
 
-  uploadCard(data){
+   uploadCard(data){
     return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards`, {
       method: 'POST',
       headers:{
@@ -80,16 +70,10 @@ export default class Api {
       })
     })
     .then(res => {
-      if(res.ok){
-
-        return res.json()
-        
-      } else {
-
-        return console.log(res.status)
-      }
+      return this.res(res)
     })
   }
+
 
   deleteCard(data){
     const id = data._data._id
@@ -105,14 +89,7 @@ export default class Api {
     }
     )
     .then(res => {
-      if(res.ok){
-
-        return res.json()
-        
-      } else {
-
-        return console.log(res.status)
-      }
+      return this.res(res)
     })
   }
 

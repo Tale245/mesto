@@ -2,7 +2,6 @@ export default class Card {
     constructor({handleClickDeleteIcon}, data, templateSelector, handleCardClick){
         this._data = data
         this._cardName = data.name;
-        this._cardId = data._id;
         this._cardLink = data.link;
         this._templateSelector = templateSelector;
         this._handleCardClick = handleCardClick;
@@ -46,6 +45,7 @@ export default class Card {
         this._handleCardClick(this._cardName, this._cardLink);
     }
 
+    
     generateCard(){
     // Запишем разметку в приватное поле _element
     // Чтобы у других элементов появился доступ к ней
@@ -58,7 +58,6 @@ export default class Card {
     // Добавим данные в карточку
     this.cardImage.src = this._cardLink;
     this.cardImage.alt = this._cardName;
-    this.cardImage.id = this._cardId;
     this._element.querySelector('.element__title').textContent = this._cardName;
 
     // Удаляем корзинку удаления, если айди не совпадает

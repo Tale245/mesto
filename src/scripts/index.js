@@ -78,6 +78,8 @@ const handleDeleteCard = (data) => {
     api.deleteCard(data).then(() => {
       data.handleDeleteCard()
       popupConfirm.close()
+    }).catch((error) => {
+      console.log(error);
     })
   })
 }
@@ -125,17 +127,30 @@ const popupEdtiProfile = new PopupWithForm({
   },
 });
 
+// const popupAddCard = new PopupWithForm({
+//   popupSelector: ".popup_add-item",
+//   submitForm:  (data) => {
+//      api.uploadCard(data).then( () => { 
+//      console.log(data)
+//      section.addItem(createCard(data));
+//     }).catch((err) => {
+//       console.log(err)
+//     })
+//   },
+// });
+
 const popupAddCard = new PopupWithForm({
   popupSelector: ".popup_add-item",
-  submitForm: (data) => {
-    api.uploadCard(data).then(() => { 
-      console.log(data)
-      section.addItem(createCard(data));
-    }).catch((err) => {
-      console.log(err)
-    })
+  submitForm:  async (data) => {
+    try{
+     const card = await api.uploadCard(data)
+     section.addItem(createCard(card));
+    } catch(error){
+      console.log(error)
+    }
   },
 });
+
 
 popupEdtiProfile.setEventListeners();
 popupAddCard.setEventListeners();
