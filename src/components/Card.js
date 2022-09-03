@@ -9,6 +9,7 @@ export default class Card {
     this._handleLikeCard = handleLikeCard;
     this._handleDislikeCard = handleDislikeCard;
     this._userId = "d5672d92285eb30f8077412e";
+    this._isLiked = false
   }
   _getTemplate() {
     const cardElement = document
@@ -22,7 +23,7 @@ export default class Card {
     //Обработчик события лайка
     this.elementButton = this._element.querySelector(".element__button");
     this.elementButton.addEventListener("click", () => {
-      this._handleLikeClick();
+      this._handleLikeOnCard();
     });
     //Обработчик события удаления карточки
     this._trashBtn = this._element.querySelector(".element__trash-button");
@@ -40,17 +41,19 @@ export default class Card {
     this._element.querySelector(".element__like").textContent = likes;
   }
   _handleLikeOnCard() {
-     if(this._isLiked == false){
-        this._handleLikeCard(this)
+
+     if(this._isLiked === false){
+      this._handleLikeCard(this)
+      this._isLiked = true
+
      } else{
-        this._handleDislikeCard(this)
+
+      this._handleDislikeCard(this)
+      this._isLiked = false
      }
+
   }
 
-  // Поиск кнопки лайка и добавление ей класса Active
-  _handleLikeClick() {
-    this._handleLikeOnCard();
-  }
   // Удаление карточки
   handleDeleteCard() {
     this._element.remove();
@@ -58,12 +61,6 @@ export default class Card {
   //открытие попапа карточки
   _handleOpenImagePopupClick() {
     this._handleCardClick(this._cardName, this._cardLink);
-  }
-  // поставим в карточку обработчик, который покажет, ставил ли пользователь лайк, или нет.
-  _isLiked(){
-    return Boolean(this._data.likes.find( (item) => {
-      return item._id === this._userId
-    }))
   }
   generateCard() {
     // Запишем разметку в приватное поле _element
@@ -75,8 +72,12 @@ export default class Card {
 
     this._setEventListeners();
 
-    this._isLiked();
-
+    this._data.likes.find( (item) => {
+      if(item._id === this._userId){
+        this.elementButton.classList.add("element__button_active");
+        this._isLiked = true
+      }
+    })
     // Добавим данные в карточку
     this.cardImage.src = this._cardLink;
     this.cardImage.alt = this._cardName;

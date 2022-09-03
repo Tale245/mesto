@@ -107,6 +107,7 @@ const section = new Section(
   { renderer: api.getCards()
     .then((res) => {
       return res.forEach((data) => {
+        console.log(data)
         section.addItem(createCard(data));
       });
     })
