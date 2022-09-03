@@ -9,6 +9,7 @@ export default class Card {
     this._handleLikeCard = handleLikeCard;
     this._handleDislikeCard = handleDislikeCard;
     this._userId = "d5672d92285eb30f8077412e";
+    this.isliked = false;
   }
   _getTemplate() {
     const cardElement = document
@@ -40,7 +41,7 @@ export default class Card {
     this._element.querySelector(".element__like").textContent = likes;
   }
   _handleLikeOnCard() {
-     if(this._isLiked !== false){
+     if(this._isLiked == false){
         this._handleLikeCard(this)
      } else{
         this._handleDislikeCard(this)
@@ -61,7 +62,9 @@ export default class Card {
   }
   // поставим в карточку обработчик, который покажет, ставил ли пользователь лайк, или нет.
   _isLiked(){
-    return Boolean(this._data.likes.find(item => item.id === this._userId))
+    return Boolean(this._data.likes.find( (item) => {
+      return item._id === this._userId
+    }))
   }
   generateCard() {
     // Запишем разметку в приватное поле _element
