@@ -9,7 +9,6 @@ export default class Card {
     this._handleLikeCard = handleLikeCard;
     this._handleDislikeCard = handleDislikeCard;
     this._userId = "d5672d92285eb30f8077412e";
-    this.isliked = false;
   }
   _getTemplate() {
     const cardElement = document
