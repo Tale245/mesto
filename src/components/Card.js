@@ -40,12 +40,11 @@ export default class Card {
     this._element.querySelector(".element__like").textContent = likes;
   }
   _handleLikeOnCard() {
-    if (Boolean(this._isLiked) == false) {
-    //   return this._handleLikeCard(this);
-    console.log('like!')
-    } else {
-        console.log('dislike!')
-    }
+     if(this._isLiked !== false){
+        this._handleLikeCard(this)
+     } else{
+        this._handleDislikeCard(this)
+     }
   }
 
   // Поиск кнопки лайка и добавление ей класса Active
@@ -62,7 +61,7 @@ export default class Card {
   }
   // поставим в карточку обработчик, который покажет, ставил ли пользователь лайк, или нет.
   _isLiked(){
-    return Boolean(this._data._likes.find(item => item.id === this._userId))
+    return Boolean(this._data.likes.find(item => item.id === this._userId))
   }
   generateCard() {
     // Запишем разметку в приватное поле _element
@@ -71,7 +70,10 @@ export default class Card {
 
     // Добавим слушатели
     this.cardImage = this._element.querySelector(".element__img");
+
     this._setEventListeners();
+
+    this._isLiked();
 
     // Добавим данные в карточку
     this.cardImage.src = this._cardLink;

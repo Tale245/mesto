@@ -100,9 +100,9 @@ export default class Api {
         authorization: `${this.userData.authorization}`,
         'Content-Type': 'application/json'
       },
-      // body: JSON.stringify({
-      //   _id: data._data._id
-      // })
+      body: JSON.stringify({
+        likes: data._data.likes
+      })
     })
     .then(res => {
       return this.res(res)
@@ -117,7 +117,7 @@ export default class Api {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        _id: data._data._id
+        likes: data._data.likes
       })
     })
     .then(res => {
