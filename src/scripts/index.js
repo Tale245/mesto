@@ -33,8 +33,6 @@ const user = {
 };
 
 const api = new Api(user);
-
-
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
 const addformValidator = new FormValidator(enableValidation, formAddItem);
@@ -73,8 +71,6 @@ const handleDeleteCard = (data) => {
   popupConfirm.open()
   popupConfirm.setSubmitAction(() => {
     console.log(data)
-    // card.handleDeleteCard()
-    // popupConfirm.close()
     api.deleteCard(data).then(() => {
       data.handleDeleteCard()
       popupConfirm.close()
@@ -84,11 +80,21 @@ const handleDeleteCard = (data) => {
   })
 }
 
+const handleLike = async (data) => {
+  const like = await api.likeCard(data)
+  data.likeCard(like.likes.length)
+}
+const handleDislike = async (data) => {
+  const dislike = await api.dislikeCard(data)
+  data.likeCard(dislike.likes.length)
+}
+
 // создаем карточку
 const createCard = (data) => {
-
   const card = new Card(
-    {handleClickDeleteIcon: handleDeleteCard},
+    {handleClickDeleteIcon: handleDeleteCard,
+    handleLikeCard: handleLike,
+    handleDislikeCard: handleDislike},
     data,
     "#template",
     openImage);
@@ -98,15 +104,13 @@ const createCard = (data) => {
 
 // Добавляем карточик из массива
 const section = new Section(
-  {
-    renderer: api
-      .getCards()
-      .then((res) => {
-        return res.forEach((data) => {
-          section.addItem(createCard(data));
-        });
-      })
-      .catch((error) => {
+  { renderer: api.getCards()
+    .then((res) => {
+      return res.forEach((data) => {
+        section.addItem(createCard(data));
+      });
+    })
+    .catch((error) => {
         console.log(error);
       }),
   },
@@ -127,17 +131,6 @@ const popupEdtiProfile = new PopupWithForm({
   },
 });
 
-// const popupAddCard = new PopupWithForm({
-//   popupSelector: ".popup_add-item",
-//   submitForm:  (data) => {
-//      api.uploadCard(data).then( () => { 
-//      console.log(data)
-//      section.addItem(createCard(data));
-//     }).catch((err) => {
-//       console.log(err)
-//     })
-//   },
-// });
 
 const popupAddCard = new PopupWithForm({
   popupSelector: ".popup_add-item",

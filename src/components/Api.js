@@ -76,18 +76,50 @@ export default class Api {
 
 
   deleteCard(data){
-    const id = data._data._id
-    return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${id}`,{
+    this._id = data._data._id
+    return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${this._id}`,{
       method: 'DELETE',
       headers: {
         authorization: `${this.userData.authorization}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        _id: id
+        _id: this._id
       })
     }
     )
+    .then(res => {
+      return this.res(res)
+    })
+  }
+
+  likeCard(data){
+    return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${data._data._id}/likes`, {
+      method: 'PUT',
+      headers: {
+        authorization: `${this.userData.authorization}`,
+        'Content-Type': 'application/json'
+      },
+      // body: JSON.stringify({
+      //   _id: data._data._id
+      // })
+    })
+    .then(res => {
+      return this.res(res)
+    })
+  }
+
+  dislikeCard(data){
+      return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${data._data._id}/likes`, {
+      method: 'DELETE',
+      headers: {
+        authorization: `${this.userData.authorization}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        _id: data._data._id
+      })
+    })
     .then(res => {
       return this.res(res)
     })
