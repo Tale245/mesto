@@ -125,4 +125,20 @@ export default class Api {
     })
   }
 
+  changeAvatar(data){
+    return fetch(`https://mesto.nomoreparties.co/v1/${this.userData.cohort}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: {
+        authorization: `${this.userData.authorization}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        avatar: data.avatar
+      })
+    })
+    .then(res => {
+      return this.res(res)
+    })
+  }
+
 }

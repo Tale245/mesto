@@ -3,7 +3,13 @@
   height: 120px;
   grid-column: 1;
   grid-row: 1;
+  object-fit: cover;
+  border-radius: 100px;
 }
+/* .profile__image:hover{
+  transition: opacity 200ms ease-in-out;
+  opacity: 0.5;
+} */
 
 @media screen and (max-width: 990px) {
   .profile__image {

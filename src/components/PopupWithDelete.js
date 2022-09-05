@@ -1,29 +1,25 @@
 import Popup from "./Popup.js";
 
-export default class PopupWithDelete extends Popup{
-  constructor({popupSelector}){
+export default class PopupWithDelete extends Popup {
+  constructor({ popupSelector }) {
     super(popupSelector);
-    this.popup = document.querySelector(popupSelector)
+    this.popup = document.querySelector(popupSelector);
   }
 
-  open(){
-    super.open()
+  open() {
+    super.open();
   }
-
-  // close(){
-  //   super.close()
-  // }
 
   setSubmitAction(action) {
-    this._handleSubmitCallback = action
+    this._handleSubmitCallback = action;
   }
 
-  setEventListeners(){
-    super.setEventListeners()
-    this.button = document.querySelector('.popup__submit-confirm')
-    this.button.addEventListener('click', () => {
-      this._handleSubmitCallback()
-      console.log("клик")
-    })
+  setEventListeners() {
+    super.setEventListeners();
+    this.button = document.querySelector(".popup__submit-confirm");
+    this.button.addEventListener("click", () => {
+      this._handleSubmitCallback();
+      console.log("клик");
+    });
   }
 }

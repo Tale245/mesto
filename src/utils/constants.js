@@ -11,7 +11,11 @@ const imageTitle = popupAddItem.querySelector(".popup__field_title-image");
 const popupImg = document.querySelector(".popup_image-scale");
 const title = document.querySelector(".profile__title");
 const subtitle = document.querySelector(".profile__paragraph");
+const imageContainer = document.querySelector(".profile__image-container");
+const formChangeAvatar = document.querySelector(".popup__form_change-avatar");
+const changeAvatarField = document.querySelector('.popup__field_change-avatar')
+const profileImage = document.querySelector('.profile__image')
 
 export {buttonEditProfile, popupAddItem, popupEditInfo,
    profileForm, nameInput, jobInput, buttonAddProfile,
-    formAddItem, imageField, imageTitle, popupImg, title, subtitle}
+    formAddItem, imageField, imageTitle, popupImg, title, subtitle, imageContainer, formChangeAvatar, changeAvatarField, profileImage}

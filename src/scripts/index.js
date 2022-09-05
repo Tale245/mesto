@@ -22,10 +22,15 @@ import {
   imageTitle,
   popupImg,
   title,
-  subtitle
+  subtitle,
+  imageContainer,
+  formChangeAvatar,
+  changeAvatarField,
+  profileImage
 } from "../utils/constants.js";
 // Импорт объектов для валидации
 import { enableValidation } from "../utils/enableValidation.js";
+import PopupWithAvatar from "../components/PopupWithAvatar.js";
 
 const user = {
   cohort: "cohort-49",
@@ -36,8 +41,10 @@ const api = new Api(user);
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
 const addformValidator = new FormValidator(enableValidation, formAddItem);
+const changeAvatarValidator = new FormValidator(enableValidation, formChangeAvatar)
 editformValidator.enableValidation();
 addformValidator.enableValidation();
+changeAvatarValidator.enableValidation();
 
 
 const userInfo = new UserInfo({
@@ -49,6 +56,7 @@ api
   .userName()
   .then((result) => {
     userInfo.setUserInfo(result.name, result.about);
+    profileImage.src = result.avatar
   })
   .catch((error) => {
     console.log(error);
@@ -107,7 +115,6 @@ const section = new Section(
   { renderer: api.getCards()
     .then((res) => {
       return res.forEach((data) => {
-        console.log(data)
         section.addItem(createCard(data));
       });
     })
@@ -123,7 +130,7 @@ const popupEdtiProfile = new PopupWithForm({
   submitForm: (data) => {
     api.saveUserName(data)
       .then((data) => {
-        console.log(data);
+        console.log(data)
         userInfo.setUserInfo(data.name, data.about);
       })
       .catch((err) => {
@@ -145,7 +152,19 @@ const popupAddCard = new PopupWithForm({
   },
 });
 
+// const popupAvatar = new PopupWithAvatar({
+//   popupSelector: '.popup_change-avatar'
+// })
+const popupAvatar = new PopupWithForm({
+  popupSelector: '.popup_change-avatar',
+  submitForm: async (data) => {
+    console.log(data) 
+    const apiAvatar = await api.changeAvatar(data)
+    profileImage.src = apiAvatar.avatar
+  }
+})
 
+popupAvatar.setEventListeners()
 popupEdtiProfile.setEventListeners();
 popupAddCard.setEventListeners();
 
@@ -161,4 +180,7 @@ buttonAddProfile.addEventListener("click", function () {
   addformValidator.resetValidator();
   popupAddCard.open();
 });
-
+imageContainer.addEventListener('click', () => {
+  changeAvatarValidator.resetValidator()
+  popupAvatar.open()
+})
