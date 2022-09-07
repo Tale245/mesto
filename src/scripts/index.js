@@ -11,21 +11,13 @@ import PopupWithDelete from "../components/PopupWithDelete.js";
 // Импортируем константы
 import {
   buttonEditProfile,
-  popupAddItem,
-  popupEditInfo,
   profileForm,
   nameInput,
   jobInput,
   buttonAddProfile,
   formAddItem,
-  imageField,
-  imageTitle,
-  popupImg,
-  title,
-  subtitle,
   imageContainer,
   formChangeAvatar,
-  changeAvatarField,
   profileImage
 } from "../utils/constants.js";
 // Импорт объектов для валидации
@@ -78,7 +70,6 @@ popupConfirm.setEventListeners()
 const handleDeleteCard = (data) => {
   popupConfirm.open()
   popupConfirm.setSubmitAction(() => {
-    console.log(data)
     api.deleteCard(data).then(() => {
       data.handleDeleteCard()
       popupConfirm.close()
