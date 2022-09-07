@@ -8,7 +8,7 @@
   outline: none;
   border: none;
   border-radius: 2px;
-  transition: opacity 100ms ease-in-out;
+  transition: opacity 200ms ease-in-out;
 }
 
 .popup__submit-button:hover {
