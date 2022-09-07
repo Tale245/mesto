@@ -8,7 +8,7 @@
   align-self: center;
   background-color: #ffffff;
   background-image: url(../../../images/element__logo.svg);
-  transition: opacity 100ms ease-in-out;
+  transition: opacity 200ms ease-in-out;
 }
 
 .element__button:hover {

@@ -30,7 +30,6 @@ import {
 } from "../utils/constants.js";
 // Импорт объектов для валидации
 import { enableValidation } from "../utils/enableValidation.js";
-import PopupWithAvatar from "../components/PopupWithAvatar.js";
 
 const user = {
   cohort: "cohort-49",
@@ -51,6 +50,7 @@ const userInfo = new UserInfo({
   userName: ".profile__title",
   infoAboutUser: ".profile__paragraph",
 });
+
 
 api
   .userName()
@@ -89,12 +89,21 @@ const handleDeleteCard = (data) => {
 }
 
 const handleLike = async (data) => {
-  const like = await api.likeCard(data)
-  data.likeCard(like.likes.length)
+  try{
+    const like = await api.likeCard(data)
+    data.likeCard(like.likes.length)
+  } catch(error){
+    console.log(error)
+  }
 }
 const handleDislike = async (data) => {
-  const dislike = await api.dislikeCard(data)
-  data.likeCard(dislike.likes.length)
+  try{
+    const dislike = await api.dislikeCard(data)
+    data.likeCard(dislike.likes.length)
+  } catch(error){
+    console.log(error)
+  }
+
 }
 
 // создаем карточку
@@ -128,6 +137,7 @@ const section = new Section(
 const popupEdtiProfile = new PopupWithForm({
   popupSelector: ".popup_edit-info",
   submitForm: (data) => {
+    editformValidator.isLoadingEdit(true)
     api.saveUserName(data)
       .then((data) => {
         console.log(data)
@@ -135,7 +145,10 @@ const popupEdtiProfile = new PopupWithForm({
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => {
+        editformValidator.isLoadingEdit(false)
+      })
   },
 });
 
@@ -143,12 +156,14 @@ const popupEdtiProfile = new PopupWithForm({
 const popupAddCard = new PopupWithForm({
   popupSelector: ".popup_add-item",
   submitForm:  async (data) => {
+    addformValidator.isLoadingAdd(true)
     try{
      const card = await api.uploadCard(data)
      section.addItem(createCard(card));
     } catch(error){
       console.log(error)
-    }
+    };
+    addformValidator.isLoadingAdd(false)
   },
 });
 
@@ -158,9 +173,12 @@ const popupAddCard = new PopupWithForm({
 const popupAvatar = new PopupWithForm({
   popupSelector: '.popup_change-avatar',
   submitForm: async (data) => {
-    console.log(data) 
-    const apiAvatar = await api.changeAvatar(data)
-    profileImage.src = apiAvatar.avatar
+    try{
+      const apiAvatar = await api.changeAvatar(data)
+      profileImage.src = apiAvatar.avatar
+    } catch(error){
+      console.log(error)
+    }
   }
 })
 

@@ -36,6 +36,21 @@ export default class FormValidator{
     }
     }
 
+    isLoadingEdit = (isLoading) => {
+        if(isLoading){
+            this._btnText.textContent = 'Сохранение...'
+        } else{
+            this._btnText.textContent = 'Сохранить'
+        }
+    }
+    isLoadingAdd = (isLoading) => {
+        if(isLoading){
+            this._btnText.textContent = 'Сохранение...'
+        } else{
+            this._btnText.textContent = 'Создать'
+        }
+    }
+
     resetValidator(){
         this.toggleButtonState(this._inputList, this._buttonElement)
 
@@ -56,6 +71,8 @@ export default class FormValidator{
         this._inputList = Array.from(this._formElement.querySelectorAll(this._object.inputSelector));
 
         this._buttonElement = this._formElement.querySelector(this._object.submitButtonSelector);
+
+        this._btnText = this._formElement.querySelector(this._object.btnText);
 
         this.toggleButtonState();
 
