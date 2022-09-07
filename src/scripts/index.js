@@ -140,7 +140,6 @@ const popupEdtiProfile = new PopupWithForm({
     editformValidator.isLoadingEdit(true)
     api.saveUserName(data)
       .then((data) => {
-        console.log(data)
         userInfo.setUserInfo(data.name, data.about);
       })
       .catch((err) => {
@@ -167,24 +166,23 @@ const popupAddCard = new PopupWithForm({
   },
 });
 
-// const popupAvatar = new PopupWithAvatar({
-//   popupSelector: '.popup_change-avatar'
-// })
 const popupAvatar = new PopupWithForm({
   popupSelector: '.popup_change-avatar',
   submitForm: async (data) => {
+    changeAvatarValidator.isLoadingEdit(true)
     try{
       const apiAvatar = await api.changeAvatar(data)
       profileImage.src = apiAvatar.avatar
     } catch(error){
       console.log(error)
     }
+    changeAvatarValidator.isLoadingEdit(false)
   }
 })
 
-popupAvatar.setEventListeners()
 popupEdtiProfile.setEventListeners();
 popupAddCard.setEventListeners();
+popupAvatar.setEventListeners()
 
 // Открытие попапов
 buttonEditProfile.addEventListener("click", function () {
@@ -198,7 +196,7 @@ buttonAddProfile.addEventListener("click", function () {
   addformValidator.resetValidator();
   popupAddCard.open();
 });
-imageContainer.addEventListener('click', () => {
+imageContainer.addEventListener('click', function () {
   changeAvatarValidator.resetValidator()
   popupAvatar.open()
 })
