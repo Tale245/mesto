@@ -1,4 +1,4 @@
-// import "../pages/index.css"
+import "../pages/index.css"
 // export class FormValidator
 import FormValidator from "../components/FormValidator.js";
 import UserInfo from "../components/UserInfo.js";
