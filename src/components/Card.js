@@ -1,5 +1,5 @@
 export default class Card {
-  constructor({ handleClickDeleteIcon, handleLikeCard, handleDislikeCard }, data, templateSelector, handleCardClick) {
+  constructor({ handleClickDeleteIcon, handleLikeCard, handleDislikeCard, userId }, data, templateSelector, handleCardClick) {
     this._data = data;
     this._cardName = data.name;
     this._cardLink = data.link;
@@ -8,7 +8,7 @@ export default class Card {
     this._handleClickDeleteIcon = handleClickDeleteIcon;
     this._handleLikeCard = handleLikeCard;
     this._handleDislikeCard = handleDislikeCard;
-    this._userId = "d5672d92285eb30f8077412e";
+    this._userId = userId;
     this._isLiked = false
   }
   _getTemplate() {
@@ -34,11 +34,12 @@ export default class Card {
     this.cardImage.addEventListener("click", () => {
       this._handleOpenImagePopupClick();
     });
+    this._likeValue = this._element.querySelector(".element__like")
   }
 
   likeCard(likes) {
     this.elementButton.classList.toggle("element__button_active");
-    this._element.querySelector(".element__like").textContent = likes;
+    this._likeValue.textContent = likes;
   }
   _handleLikeOnCard() {
 
@@ -88,7 +89,7 @@ export default class Card {
       this._trashBtn.remove();
     }
     // показываем кол-во лайков на карточке
-    this._element.querySelector(".element__like").textContent =
+    this._likeValue.textContent =
       this._data.likes.length;
 
     return this._element;

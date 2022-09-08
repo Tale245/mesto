@@ -5,14 +5,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Проект Место</title>
+    <link rel="stylesheet" href="./pages/index.css" />
   </head>
+
+  <!-- logoMesto src="<%=require('./images/header__logo.svg')%>" -->
+  <!-- profileImage src="<%=require('./images/profile__avatar.svg')%>" -->
 
   <body class="body">
     <div class="page">
       <header class="header">
         <a href="index.html" class="header__link"
           ><img
-          src="<%=require('./images/header__logo.svg')%>" 
+            src="./images/header__logo.svg"
             alt="логотип проекта Место"
             class="header__logo"
         /></a>
@@ -180,5 +184,6 @@
         </div>
       </div>
     </template>
+    <script type="module" src="./pages/index.js"></script>
   </body>
 </html>

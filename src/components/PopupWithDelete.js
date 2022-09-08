@@ -3,11 +3,6 @@ import Popup from "./Popup.js";
 export default class PopupWithDelete extends Popup {
   constructor({ popupSelector }) {
     super(popupSelector);
-    this.popup = document.querySelector(popupSelector);
-  }
-
-  open() {
-    super.open();
   }
 
   setSubmitAction(action) {

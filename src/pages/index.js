@@ -1,4 +1,4 @@
-import "../pages/index.css"
+// import "../pages/index.css"
 // export class FormValidator
 import FormValidator from "../components/FormValidator.js";
 import UserInfo from "../components/UserInfo.js";
@@ -18,41 +18,49 @@ import {
   formAddItem,
   imageContainer,
   formChangeAvatar,
-  profileImage
+  profileImage,
 } from "../utils/constants.js";
 // Импорт объектов для валидации
 import { enableValidation } from "../utils/enableValidation.js";
+// Сюда запишем айди пользователя
+let userId;
 
 const user = {
   cohort: "cohort-49",
-  authorization: "5ef57d1b-1ea7-434a-b183-6df5295fe05d",
+  headers: {
+    authorization: "5ef57d1b-1ea7-434a-b183-6df5295fe05d",
+    "Content-Type": "application/json",
+  },
 };
 
 const api = new Api(user);
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
 const editformValidator = new FormValidator(enableValidation, profileForm);
 const addformValidator = new FormValidator(enableValidation, formAddItem);
-const changeAvatarValidator = new FormValidator(enableValidation, formChangeAvatar)
+const changeAvatarValidator = new FormValidator(
+  enableValidation,
+  formChangeAvatar
+);
 editformValidator.enableValidation();
 addformValidator.enableValidation();
 changeAvatarValidator.enableValidation();
 
-
 const userInfo = new UserInfo({
   userName: ".profile__title",
   infoAboutUser: ".profile__paragraph",
+  userAvatar: ".profile__image",
 });
 
-
-api
-  .userName()
-  .then((result) => {
-    userInfo.setUserInfo(result.name, result.about);
-    profileImage.src = result.avatar
-  })
-  .catch((error) => {
-    console.log(error);
+Promise.all([api.userName(), api.getCards()]).then(([userData, cardsData]) => {
+  userInfo.setUserInfo({
+    name: userData.name,
+    job: userData.about,
   });
+  userInfo.changeAvatar({avatar: userData.avatar})
+  userId = userData._id;
+
+  section.rendererItems(cardsData);
+});
 
 const popupImage = new PopupWithImage(".popup_image-scale");
 popupImage.setEventListeners();
@@ -62,118 +70,126 @@ const openImage = (name, link) => {
 };
 
 const popupConfirm = new PopupWithDelete({
-  popupSelector: ".popup_confirm"
-})
+  popupSelector: ".popup_confirm",
+});
 
-popupConfirm.setEventListeners()
+popupConfirm.setEventListeners();
 
 const handleDeleteCard = (data) => {
-  popupConfirm.open()
+  popupConfirm.open();
   popupConfirm.setSubmitAction(() => {
-    api.deleteCard(data).then(() => {
-      data.handleDeleteCard()
-      popupConfirm.close()
-    }).catch((error) => {
-      console.log(error);
-    })
-  })
-}
+    api
+      .deleteCard(data)
+      .then(() => {
+        data.handleDeleteCard();
+        popupConfirm.close();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+};
 
 const handleLike = async (data) => {
-  try{
-    const like = await api.likeCard(data)
-    data.likeCard(like.likes.length)
-  } catch(error){
-    console.log(error)
+  try {
+    const like = await api.likeCard(data);
+    data.likeCard(like.likes.length);
+  } catch (error) {
+    console.log(error);
   }
-}
+};
 const handleDislike = async (data) => {
-  try{
-    const dislike = await api.dislikeCard(data)
-    data.likeCard(dislike.likes.length)
-  } catch(error){
-    console.log(error)
+  try {
+    const dislike = await api.dislikeCard(data);
+    data.likeCard(dislike.likes.length);
+  } catch (error) {
+    console.log(error);
   }
-
-}
+};
 
 // создаем карточку
 const createCard = (data) => {
   const card = new Card(
-    {handleClickDeleteIcon: handleDeleteCard,
-    handleLikeCard: handleLike,
-    handleDislikeCard: handleDislike},
+    {
+      handleClickDeleteIcon: handleDeleteCard,
+      handleLikeCard: handleLike,
+      handleDislikeCard: handleDislike,
+      userId: userId,
+    },
     data,
     "#template",
-    openImage);
+    openImage,
+    "element__like"
+  );
   const cardElement = card.generateCard();
   return cardElement;
 };
 
 // Добавляем карточик из массива
+
 const section = new Section(
-  { renderer: api.getCards()
-    .then((res) => {
-      return res.forEach((data) => {
-        section.addItem(createCard(data));
-      });
-    })
-    .catch((error) => {
-        console.log(error);
-      }),
+  {
+    renderer: (data) => {
+      section.addItem(createCard(data));
+    },
   },
   ".elements"
 );
 
 const popupEdtiProfile = new PopupWithForm({
   popupSelector: ".popup_edit-info",
-  submitForm: (data) => {
-    editformValidator.isLoadingEdit(true)
-    api.saveUserName(data)
-      .then((data) => {
-        userInfo.setUserInfo(data.name, data.about);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        editformValidator.isLoadingEdit(false)
-      })
+  submitForm: async (data) => {
+    popupEdtiProfile.isLoadingEditProfile(true);
+    try {
+      const saveUserName = await api.saveUserName(data);
+      userInfo.setUserInfo({
+        name: saveUserName.name,
+        job: saveUserName.about
+      });
+    } catch (e) {
+      console.log(error);
+    } finally {
+      popupEdtiProfile.close();
+      popupEdtiProfile.isLoadingEditProfile(false);
+    }
   },
 });
 
-
 const popupAddCard = new PopupWithForm({
   popupSelector: ".popup_add-item",
-  submitForm:  async (data) => {
-    addformValidator.isLoadingAdd(true)
-    try{
-     const card = await api.uploadCard(data)
-     section.addItem(createCard(card));
-    } catch(error){
-      console.log(error)
-    };
-    addformValidator.isLoadingAdd(false)
+  submitForm: async (data) => {
+    popupAddCard.isLoadingAddCard(true);
+    try {
+      const card = await api.uploadCard(data);
+      section.prependItem(createCard(card));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      popupAddCard.close();
+      popupAddCard.isLoadingAddCard(false);
+    }
   },
 });
 
 const popupAvatar = new PopupWithForm({
-  popupSelector: '.popup_change-avatar',
+  popupSelector: ".popup_change-avatar",
   submitForm: async (data) => {
-    changeAvatarValidator.isLoadingEdit(true)
-    try{
-      const apiAvatar = await api.changeAvatar(data)
-      profileImage.src = apiAvatar.avatar
-    } catch(error){
-      console.log(error)
+    popupAvatar.isLoadingEditProfile(true);
+    try {
+      const apiAvatar = await api.changeAvatar(data);
+      userInfo.changeAvatar({avatar: apiAvatar.avatar})
+    } catch (error) {
+      console.log(error);
+    } finally {
+      popupAvatar.close();
+      popupAvatar.isLoadingEditProfile(false);
     }
-    changeAvatarValidator.isLoadingEdit(false)
-  }
-})
+  },
+});
 
 popupEdtiProfile.setEventListeners();
 popupAddCard.setEventListeners();
-popupAvatar.setEventListeners()
+popupAvatar.setEventListeners();
 
 // Открытие попапов
 buttonEditProfile.addEventListener("click", function () {
@@ -187,7 +203,7 @@ buttonAddProfile.addEventListener("click", function () {
   addformValidator.resetValidator();
   popupAddCard.open();
 });
-imageContainer.addEventListener('click', function () {
-  changeAvatarValidator.resetValidator()
-  popupAvatar.open()
-})
+imageContainer.addEventListener("click", function () {
+  changeAvatarValidator.resetValidator();
+  popupAvatar.open();
+});
