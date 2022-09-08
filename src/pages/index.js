@@ -56,7 +56,7 @@ Promise.all([api.userName(), api.getCards()]).then(([userData, cardsData]) => {
     name: userData.name,
     job: userData.about,
   });
-  userInfo.changeAvatar({avatar: userData.avatar})
+  userInfo.changeAvatar({ avatar: userData.avatar });
   userId = userData._id;
 
   section.rendererItems(cardsData);
@@ -144,7 +144,7 @@ const popupEdtiProfile = new PopupWithForm({
       const saveUserName = await api.saveUserName(data);
       userInfo.setUserInfo({
         name: saveUserName.name,
-        job: saveUserName.about
+        job: saveUserName.about,
       });
     } catch (e) {
       console.log(error);
@@ -177,7 +177,7 @@ const popupAvatar = new PopupWithForm({
     popupAvatar.isLoadingEditProfile(true);
     try {
       const apiAvatar = await api.changeAvatar(data);
-      userInfo.changeAvatar({avatar: apiAvatar.avatar})
+      userInfo.changeAvatar({ avatar: apiAvatar.avatar });
     } catch (error) {
       console.log(error);
     } finally {

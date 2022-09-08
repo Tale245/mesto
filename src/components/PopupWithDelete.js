@@ -11,7 +11,7 @@ export default class PopupWithDelete extends Popup {
 
   setEventListeners() {
     super.setEventListeners();
-    this.button = document.querySelector(".popup__submit-confirm");
+    this.button = document.querySelector(".popup__submit-button_confirm");
     this.button.addEventListener("click", () => {
       this._handleSubmitCallback();
     });
