@@ -1,4 +1,4 @@
-import "../pages/index.css"
+// import "../pages/index.css"
 // export class FormValidator
 import FormValidator from "../components/FormValidator.js";
 import UserInfo from "../components/UserInfo.js";
@@ -26,12 +26,13 @@ import { enableValidation } from "../utils/enableValidation.js";
 let userId;
 
 const user = {
-  cohort: "cohort-49",
   headers: {
     authorization: "5ef57d1b-1ea7-434a-b183-6df5295fe05d",
     "Content-Type": "application/json",
   },
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-49'
 };
+
 
 const api = new Api(user);
 // Для каждой проверяемой формы создали экземпляр класса FormValidator
@@ -60,7 +61,7 @@ Promise.all([api.userName(), api.getCards()]).then(([userData, cardsData]) => {
   userId = userData._id;
 
   section.rendererItems(cardsData);
-});
+}).catch((error) => console.log(error));
 
 const popupImage = new PopupWithImage(".popup_image-scale");
 popupImage.setEventListeners();
@@ -139,18 +140,19 @@ const section = new Section(
 const popupEdtiProfile = new PopupWithForm({
   popupSelector: ".popup_edit-info",
   submitForm: async (data) => {
-    popupEdtiProfile.isLoadingEditProfile(true);
+    popupEdtiProfile.isLoading(true);
     try {
       const saveUserName = await api.saveUserName(data);
       userInfo.setUserInfo({
         name: saveUserName.name,
         job: saveUserName.about,
-      });
+        
+      })
+      popupEdtiProfile.close();;
     } catch (e) {
       console.log(error);
     } finally {
-      popupEdtiProfile.close();
-      popupEdtiProfile.isLoadingEditProfile(false);
+      popupEdtiProfile.isLoading(false);
     }
   },
 });
@@ -158,15 +160,15 @@ const popupEdtiProfile = new PopupWithForm({
 const popupAddCard = new PopupWithForm({
   popupSelector: ".popup_add-item",
   submitForm: async (data) => {
-    popupAddCard.isLoadingAddCard(true);
+    popupAddCard.isLoading(true);
     try {
       const card = await api.uploadCard(data);
       section.prependItem(createCard(card));
+      popupAddCard.close();
     } catch (error) {
       console.log(error);
     } finally {
-      popupAddCard.close();
-      popupAddCard.isLoadingAddCard(false);
+      popupAddCard.isLoading(false);
     }
   },
 });
@@ -174,15 +176,15 @@ const popupAddCard = new PopupWithForm({
 const popupAvatar = new PopupWithForm({
   popupSelector: ".popup_change-avatar",
   submitForm: async (data) => {
-    popupAvatar.isLoadingEditProfile(true);
+    popupAvatar.isLoading(true);
     try {
       const apiAvatar = await api.changeAvatar(data);
       userInfo.changeAvatar({ avatar: apiAvatar.avatar });
+      popupAvatar.close();
     } catch (error) {
       console.log(error);
     } finally {
-      popupAvatar.close();
-      popupAvatar.isLoadingEditProfile(false);
+      popupAvatar.isLoading(false);
     }
   },
 });

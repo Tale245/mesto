@@ -1,7 +1,8 @@
 export default class Api {
   constructor(userData) {
     this.userData = userData;
-    this._headers = userData.headers;
+    this._headers = this.userData.headers;
+    this._baseUrl = this.userData.baseUrl
   }
 
   _checkResponse(res) {
@@ -15,7 +16,7 @@ export default class Api {
   // Загрузка данных о пользователе с сервера
   userName() {
     return fetch(
-      `https://nomoreparties.co/v1/${this.userData.cohort}/users/me`,
+      `${this._baseUrl}/users/me`,
       {
         headers: this._headers,
       }
@@ -27,7 +28,7 @@ export default class Api {
   // Загрузка карточек с сервера
   getCards() {
     return fetch(
-      `https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards`,
+      `${this._baseUrl}/cards`,
       {
         headers: this._headers,
       }
@@ -39,7 +40,7 @@ export default class Api {
   // Сохранение измененных данных профиля
   saveUserName(data) {
     return fetch(
-      `https://mesto.nomoreparties.co/v1/${this.userData.cohort}/users/me`,
+      `${this._baseUrl}/users/me`,
       {
         method: "PATCH",
         headers: this._headers,
@@ -55,7 +56,7 @@ export default class Api {
 
   uploadCard(data) {
     return fetch(
-      `https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards`,
+      `${this._baseUrl}/cards`,
       {
         method: "POST",
         headers: this._headers,
@@ -72,7 +73,7 @@ export default class Api {
   deleteCard(data) {
     this._id = data._data._id;
     return fetch(
-      `https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${this._id}`,
+      `${this._baseUrl}/cards/${this._id}`,
       {
         method: "DELETE",
         headers: this._headers,
@@ -87,7 +88,7 @@ export default class Api {
 
   likeCard(data) {
     return fetch(
-      `https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${data._data._id}/likes`,
+      `${this._baseUrl}/cards/${data._data._id}/likes`,
       {
         method: "PUT",
         headers: this._headers,
@@ -102,7 +103,7 @@ export default class Api {
 
   dislikeCard(data) {
     return fetch(
-      `https://mesto.nomoreparties.co/v1/${this.userData.cohort}/cards/${data._data._id}/likes`,
+      `${this._baseUrl}/cards/${data._data._id}/likes`,
       {
         method: "DELETE",
         headers: this._headers,
@@ -117,7 +118,7 @@ export default class Api {
 
   changeAvatar(data) {
     return fetch(
-      `https://mesto.nomoreparties.co/v1/${this.userData.cohort}/users/me/avatar`,
+      `${this._baseUrl}/users/me/avatar`,
       {
         method: "PATCH",
         headers: this._headers,

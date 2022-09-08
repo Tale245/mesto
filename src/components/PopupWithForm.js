@@ -6,7 +6,8 @@ export default class PopupWithForm extends Popup {
     this._submitForm = submitForm;
     this._popupForm = this._popup.querySelector(".popup__form");
     this._inputList = this._popup.querySelectorAll(".popup__field");
-    this._btnText = this._popupForm.querySelector(".popup__text-button");
+    this._submitBtn = this._popupForm.querySelector(".popup__submit-button");
+    this._submitBtnText = this._submitBtn.textContent
   }
   _getInputValues() {
     this._formValues = {};
@@ -18,13 +19,13 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
-  isLoadingEditProfile = (isLoading) => {
-    this._btnText.textContent = isLoading ? "Сохранение..." : "Сохранить";
-  };
-
-  isLoadingAddCard = (isLoading) => {
-    this._btnText.textContent = isLoading ? "Сохранение..." : "Создать";
-  };
+  isLoading(isLoading, loadingText = 'Сoхранение...'){
+    if(isLoading){
+      this._submitBtn.textContent = loadingText
+    } else{
+      this._submitBtn.textContent = this._submitBtnText
+    }
+  }
 
   setEventListeners() {
     super.setEventListeners();
